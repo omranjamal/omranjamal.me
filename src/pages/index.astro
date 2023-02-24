@@ -1,12 +1,152 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Layout from "../layouts/Layout.astro";
+import { ChevronRight, ExternalLink } from "react-feather";
 ---
 
-<Layout title="Hi, I'm Omran">
-	<main class="container max-w-screen-lg mx-auto py-32">
-		<h1 class="text-xl">Welcome to Omran's Blog</h1>
-		<p>... err, he hasn't finished it yet, he will though. Soon.</p>
-	</main>
-</Layout>
+<Layout title="Omran Jamal">
+  <section class="flex flex-col items-center mt-10">
+    <div class="flex flex-col">
+      <div
+        class="text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-[0.85em]"
+      >
+        Hello, I'm
+      </div>
+      <div
+        class="uppercase text-[5rem] sm:text-[8rem] md:text-[10rem] lg:text-[14rem] xl:text-[16rem] leading-[0.85em]"
+      >
+        <div class="font-black">
+          <span
+            class="relative before:bg-[url('https://avatars.githubusercontent.com/u/4700757')] before:bg-cover before:block before:absolute before:rounded-full before:w-[40%] before:h-[35%] before:left-0 before:bottom-0 before:right-0 before:m-auto before:top-0 before:-z-10"
+            ><div
+              aria-hidden="true"
+              class="absolute top-0 bottom-0 left-0 hidden w-0 h-0 m-auto text-3xl font-normal leading-5 normal-case bg-red-100 md:block"
+            >
+              <div
+                class="absolute top-0 bottom-0 w-0 h-[1.5em] my-auto right-28"
+              >
+                <div
+                  class="absolute top-0 bottom-0 left-0 h-full my-auto w-28 font-just-me"
+                >
+                  That's My Gravatar
+                  <div
+                    class="absolute top-0 bottom-0 flex items-center justify-end w-16 h-6 my-auto -right-14 before:block before:h-[2.5px] before:w-full before:bg-[#FF5FF9] before:my-auto before:translate-x-1"
+                  >
+                    <ChevronRight color="#FF5FF9" size={48} />
+                  </div>
+                </div>
+              </div>
+            </div>O</span
+          >mr<span class="relative"
+            ><div
+              aria-hidden="true"
+              class="absolute top-0 left-0 hidden w-0 h-0 md:block"
+            >
+              <div
+                class="absolute flex flex-row items-center w-72 -left-0 lg:-left-10 -bottom-12"
+              >
+                <img src="/images/pin.svg" class="w-24 h-24" />
+                <div class="text-sm normal-case">
+                  <div class="font-light leading-[0.5em]">
+                    Currently Based In
+                  </div>
+                  <div class="text-lg font-semibold">Dhaka, Bangladesh</div>
+                </div>
+              </div>
+            </div>an</span
+          >
+        </div>
+        <div class="font-black">
+          <span>Jamal</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-row items-center my-6 md:hidden">
+      <img src="/images/pin.svg" class="w-12 h-12" />
+      <div class="text-sm normal-case">
+        <div class="font-light leading-[0.5em]">Currently Based In</div>
+        <div class="text-lg font-semibold">Dhaka, Bangladesh</div>
+      </div>
+    </div>
+    <div class="mx-12 font-normal text-center uppercase md:my-8 text-md">
+      <a
+        target="_blank"
+        href="#"
+        class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+      >
+        <span>Github</span>
+        <ExternalLink className="w-4" />
+      </a>
+      <a
+        target="_blank"
+        href="#"
+        class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+      >
+        <span>Medium</span>
+        <ExternalLink className="w-4" />
+      </a>
+      <a
+        target="_blank"
+        href="#"
+        class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+      >
+        <span>Twitter</span>
+        <ExternalLink className="w-4" />
+      </a>
+      <a
+        target="_blank"
+        href="#"
+        class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+      >
+        <span>LinkedIn</span>
+        <ExternalLink className="w-4" />
+      </a>
+    </div>
+    <section class="w-3/4 mt-16">
+      <p class="text-base lg:text-3xl lg:leading-snug font-jetbrains-mono">
+        I'm an <strong>engineer</strong> and <strong>entreprenuer</strong> who is sometimes loud, am
+        constantly building things, and I just can’t shut up about:
+      </p>
+      <p class="mt-6">
+        <ol class="space-y-6 list-decimal">
+          <li class="text-base lg:text-3xl font-jetbrains-mono">
+            My Startup, <a href="https://bonton.app" class="font-semibold underline"
+              >Bonton Connect</a
+            >
+            <p class="text-sm lg:text-lg">
+              ... and how we will bring all of the world’s people online.
+              <!-- <a
+                target="_blank"
+                href="#"
+                class="inline-flex items-center mx-2 space-x-2 underline uppercase transition-colors underline-offset-4 hover:text-pink-500"
+              >
+                <span>View Pitch Deck</span>
+                <ExternalLink className="w-3" />
+              </a> -->
+            </p>
+          </li>
 
+          <li class="text-base lg:text-3xl font-jetbrains-mono">
+            <strong>Engineering</strong> & <strong>Design</strong>
+            <p class="text-sm lg:text-lg">
+              ... and how they will solve all of humanity’s problems.
+              <a
+                target="_blank"
+                href="https://omranjamal.notion.site/Omran-Jamal-586b879ed9204928a41ca1ccd321b920"
+                class="inline-flex items-center mx-2 space-x-2 underline uppercase transition-colors underline-offset-4 hover:text-pink-500"
+              >
+                <span>VIEW Résumé</span>
+                <ExternalLink className="w-3" />
+              </a>
+            </p>
+          </li>
+
+          <li class="text-base lg:text-3xl font-jetbrains-mono">
+            Strawberry Milk
+            <p class="text-sm lg:text-lg">... I know the flavor is fake; It’s yummy.</p>
+          </li>
+        </ol>
+      </p>
+    </section>
+  </section>
+  <section><br /><br /><br /></section>
+</Layout>

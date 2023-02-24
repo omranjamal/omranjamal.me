@@ -17,5 +17,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), mdx(), react(), prefetch(), sitemap()]
+  integrations: [tailwind({
+    config: { applyBaseStyles: false }
+  }), mdx(), react(), prefetch(), sitemap()]
 });
