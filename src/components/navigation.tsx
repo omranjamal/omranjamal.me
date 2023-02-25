@@ -14,7 +14,13 @@ export function NavigationLink({
   const active = initiallyActive;
 
   return (
-    <a href={href} className={clsx({ "underline underline-offset-4 font-semibold": active })}>
+    <a
+      href={href}
+      className={clsx(
+        { "underline underline-offset-4 font-semibold": active },
+        "hover:text-pink-600 transition-colors"
+      )}
+    >
       {title}
     </a>
   );
@@ -26,7 +32,7 @@ export default function Navigation({ path }: { path: string }) {
 
   return (
     <nav className="">
-      <div className="container flex flex-col max-w-screen-lg px-4 py-5 mx-auto sm:flex-row">
+      <div className="container flex flex-col max-w-screen-lg px-4 py-5 mx-auto md:flex-row">
         <div className="flex flex-row items-center justify-between">
           <a
             href="/"
@@ -36,14 +42,14 @@ export default function Navigation({ path }: { path: string }) {
             <br />
             Jamal
           </a>
-          <button onClick={toggle} className="p-3 sm:hidden">
+          <button onClick={toggle} className="p-3 md:hidden">
             <Menu className="w-6" />
           </button>
         </div>
         <div
           className={clsx(
             open ? "flex" : "hidden",
-            "flex flex-col font-light space-y-2 sm:space-y-0 pt-4 sm:pt-0 sm:flex sm:flex-row ml-4 sm:ml-6 sm:space-x-4 sm:items-center"
+            "flex flex-col font-light space-y-2 md:space-y-0 pt-4 md:pt-0 md:flex md:flex-row ml-4 md:ml-6 md:space-x-4 md:items-center"
           )}
         >
           <NavigationLink
@@ -51,13 +57,29 @@ export default function Navigation({ path }: { path: string }) {
             title="About Me"
             initiallyActive={path === "/"}
           />
-          <NavigationLink
+
+          {/* <NavigationLink
             href="/blog"
             title="Blog"
             initiallyActive={path.indexOf("/blog") >= 0}
           />
 
-          <a target={'_blank'} href="mailto:omran@bonton.app" className="pl-5 space-x-2">
+          <NavigationLink
+            href="/projects"
+            title="Projects"
+            initiallyActive={path.indexOf("/projects") >= 0}
+          /> */}
+
+          <NavigationLink
+            href="https://omranjamal.notion.site/Omran-Jamal-586b879ed9204928a41ca1ccd321b920"
+            title="Résumé"
+          />
+
+          <a
+            target={"_blank"}
+            href="mailto:omran@bonton.app"
+            className="pl-5 space-x-2 transition-colors hover:text-pink-600"
+          >
             <strong className="font-semibold">omran</strong>@bonton.app
             <ArrowRight className="inline w-4" />
             <Mail className="inline w-4" />
