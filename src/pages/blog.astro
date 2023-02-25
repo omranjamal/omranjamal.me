@@ -4,12 +4,11 @@ import { getCollection, getEntryBySlug } from "astro:content";
 import { format } from "timeago.js";
 
 const posts = (await getCollection("posts")).reverse();
-console.log(posts);
 ---
 
 <Layout title="Blog — Omran Jamal">
   <div class="px-4">
-    <h1 class="my-16 text-5xl font-black">Blog</h1>
+    <h1 class="my-16 text-6xl font-black">Blog</h1>
     <section class="mb-32 space-y-8">
       {
         posts.map((post) => (

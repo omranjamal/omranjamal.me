@@ -49,7 +49,7 @@ export default function Navigation({ path }: { path: string }) {
         <div
           className={clsx(
             open ? "flex" : "hidden",
-            "flex flex-col font-light space-y-2 md:space-y-0 pt-4 md:pt-0 md:flex md:flex-row ml-4 md:ml-6 md:space-x-4 md:items-center"
+            "flex flex-col font-semibold space-y-2 md:space-y-0 pt-4 font-jetbrains-mono md:pt-0 md:flex md:flex-row ml-4 md:ml-6 md:space-x-4 md:items-center"
           )}
         >
           <NavigationLink

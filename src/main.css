@@ -6,3 +6,52 @@
 html, body {
     font-family: 'Inter', sans-serif;
 }
+
+.post h1 {
+    @apply my-8 mt-8 text-5xl font-black font-jetbrains-mono;
+}
+
+.post h2 {
+    @apply my-4 mt-8 text-4xl font-black font-jetbrains-mono;
+}
+
+.post h3 {
+    @apply my-6 mt-8 text-2xl font-bold font-jetbrains-mono;
+}
+
+.post h4 {
+    @apply my-4 mt-8 text-xl font-semibold font-jetbrains-mono;
+}
+
+.post h5 {
+    @apply my-2 mt-8 text-lg font-semibold font-jetbrains-mono;
+}
+
+.post p {
+    @apply px-2 my-3;
+}
+
+.post ol {
+    @apply pl-6 list-decimal;
+}
+
+.post ul {
+    @apply pl-6 list-disc;
+}
+
+.post blockquote {
+    @apply px-4 py-4 my-4 border-l-4 rounded-md bg-slate-100;
+}
+
+.post pre {
+    @apply px-5 py-4 my-4 border-b-4 rounded-md border-b-black;
+}
+
+.post p code {
+    @apply px-1 py-0 bg-yellow-100 border-2 border-yellow-200 rounded-md;
+}
+
+::selection {
+  color: black;
+  @apply bg-pink-600;
+}

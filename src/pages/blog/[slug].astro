@@ -1,0 +1,27 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, getEntryBySlug } from "astro:content";
+
+export async function getStaticPaths() {
+  return (await getCollection("posts")).map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getEntryBySlug("posts", slug);
+const { Content, headers } = await post.render();
+---
+
+<Layout title={`${post.data.title} — Omran Jamal`}>
+  <h1 class="px-4 mt-24 text-6xl font-black max-w-[85%]">{post.data.title}</h1>
+
+  <main class="flex flex-col mx-4 lg:flex-row-reverse">
+    <aside class="w-full lg:w-1/4">Authorr</aside>
+    <section class="w-full text-lg lg:w-3/4 font-inter">
+      <div class="post">
+        <Content />
+      </div>
+    </section>
+  </main>
+</Layout>

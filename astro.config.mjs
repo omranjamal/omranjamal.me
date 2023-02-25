@@ -19,5 +19,11 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   integrations: [tailwind({
     config: { applyBaseStyles: false }
-  }), mdx(), react(), prefetch(), sitemap()]
+  }), mdx(), react(), prefetch(), sitemap()],
+  markdown: {
+    gfm: true,
+    shikiConfig: {
+      theme: 'rose-pine-moon',
+    }
+  }
 });
