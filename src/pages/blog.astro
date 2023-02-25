@@ -1,8 +1,37 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
+import { getCollection, getEntryBySlug } from "astro:content";
+import { format } from "timeago.js";
+
+const posts = (await getCollection("posts")).reverse();
+console.log(posts);
 ---
 
 <Layout title="Blog — Omran Jamal">
-    <p class="my-32 text-center text-gray-500">Still Under Construction</p>
+  <div class="px-4">
+    <h1 class="my-16 text-5xl font-black">Blog</h1>
+    <section class="mb-32 space-y-8">
+      {
+        posts.map((post) => (
+          <div class="block font-jetbrains-mono">
+            <a href={`/blog/${post.slug}`} class="text-2xl font-bold">
+              {post.data.title}
+            </a>
+            <div class="md:ml-12">
+              <div class="space-x-4">
+                {post.data.tags.map((tag) => (
+                  <a href="#" class="text-sm text-gray-400">
+                    {tag}
+                  </a>
+                ))}
+              </div>
+              <div class="text-sm text-gray-500 uppercase">
+                {format(post.data.edited, "en_US")}
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+  </div>
 </Layout>
