@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 import tailwind from "@astrojs/tailwind";
@@ -15,15 +15,24 @@ import prefetch from "@astrojs/prefetch";
 // https://astro.build/config
 import sitemap from "@astrojs/sitemap";
 
+import behead from "remark-behead";
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind({
-    config: { applyBaseStyles: false }
-  }), mdx(), react(), prefetch(), sitemap()],
+  integrations: [
+    tailwind({
+      config: { applyBaseStyles: false },
+    }),
+    mdx(),
+    react(),
+    prefetch(),
+    sitemap(),
+  ],
   markdown: {
+    remarkPlugins: [[behead, { minDepth: 2 }]],
     gfm: true,
     shikiConfig: {
-      theme: 'rose-pine-moon',
-    }
-  }
+      theme: "rose-pine-moon",
+    },
+  },
 });

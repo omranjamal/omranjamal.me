@@ -1,0 +1,226 @@
+---
+title: ⚛️ Multi-Command Atomic Operations in Redis ft. Lua
+published: 2023-03-09
+edited: 2023-02-25 15:49:00+6
+highlight: true
+tags:
+  - databases
+  - redis
+  - backend
+  - lua
+---
+
+Need to run Redis commands, and conditionally run more commands based on logic?
+Implementing in program code will cause [race conditions](https://stackoverflow.com/questions/34510/what-is-a-race-condition), and [transactions](https://redis.io/docs/manual/transactions) are a subpar solution.
+Let's make an atomic operation in Redis with [Lua](https://lua.org)!
+
+> FYI, Lua is a hella cool scripting langauge, and an absolute
+> delight to work with. We actually use it a lot at [Bonton Connect](https://bonton.app).
+
+# What We'll Make
+
+The [`INCR`](https://redis.io/commands/incr/) and [`INCRBY`](https://redis.io/commands/incrby/) command in Redis does not fail when the key we are trying to
+increment is not present. It initializes the value of the key to `0` and then increments it,
+and returns the incremented value.
+
+This was potentially dangerous for what we were trying to do at [Bonton Connect](https://bonton.app).
+We needed a command that initializes a counter to the last known safe starting value or raise an
+exception if both the counter and the safe value doesn't exist.
+
+Assuming the safe starting point of the counter
+was also stored in Redis, we needed something like the following
+pseudocode (which oddly looks like python).
+
+```python
+def complex_incrby($key, $by, $safe_start_key):
+    if not EXISTS $key:
+        if EXISTS $safe_start_key:
+            $start = GET $safe_start_key
+            SET $key $start
+        else:
+            raise "safe start key not found"
+
+    return INCRBY $key $by
+```
+
+# Problems
+
+## With Implementing In Program Code
+
+Yeah, we could simply write all the logic in program code _(with JavaScript perhaps?)_.
+It would check the existence of the keys, initialize the counter and increment it
+while capturing the value.
+
+So what's wrong? [RACE CONDITIONS](https://stackoverflow.com/questions/34510/what-is-a-race-condition).
+
+Imagine two instances of your program, or two async requests being handled by your
+program both check the existence of `$key` simultaneously and both are returned `false`.
+
+Both these threads of execution will attempt to initialize the counter, and increment it,
+and will end up with conflicting values (which ever `INCR`ed last will win).
+
+## With Transactions
+
+Yes, Redis has Transactions, but in Redis I believe it's a fancy way of saying _"execute this block of commands
+sequentially, and don't allow any other commands to run in the middle"_ if you're just using [`MULTI`](https://redis.io/commands/multi/). If you're
+using [`WATCH`](https://redis.io/commands/watch/), you have to prepend _"as long as these keys don't change ..."_
+
+### Just `MULTI` & `EXEC`
+
+You could check if the array of results returned has false for the [`EXISTS`](https://redis.io/commands/exists/) commands. This will
+work great the first time, but by the second time you attempt it, the value will already have been set
+making missing the first batch of results detrimental.
+
+### With `WATCH`
+
+The problem with watch is that it handles race conditions via failure of the transaction.
+Which is actually fine, but why not use a more appropriate tool for the job? Lua Lang!
+
+# Let's Code
+
+Before we begin, let's brush up on our Lua:
+
+- [Learn Lua in Y Minutes](https://learnxinyminutes.com/docs/lua/)
+- [Lua Docs](https://www.lua.org/docs.html)
+
+## Loading & Executing Lua Programs
+
+The [`EVAL`]() command in Redis, allows us to run arbitrary Lua programs within the Redis
+instance process itself.
+
+```bash
+> EVAL "return 'tomato'" 0
+"tomato"
+```
+
+The first argument is a string that contains your Lua program, and the second argument is the
+number of key names to pass to your Lua program. _(we'll ignore this feature for now)_
+
+```bash
+> EVAL "return ARGV[1]" 0 "potato"
+"potato"
+```
+
+## Calling Redis Commands From Lua
+
+Notice how the last two executed commands return the same value in the following cli snippet.
+
+```bash
+> SET "fruit" "mango"
+OK
+> GET "fruit"
+"mango"
+> EVAL "return redis.call('GET', 'fruit')" 0
+"mango"
+```
+
+## Implementing COMPLEX_INCRBY in Lua
+
+No words, just (lua) code.
+
+```lua
+local counter_exists = redis.call('EXISTS', ARGV[1])
+
+if counter_exists == 0 then
+    local safe_start_exists = redis.call('EXISTS', ARGV[3])
+
+    if safe_start_exists == 1 then
+        local start_point = redis.call('GET', ARGV[3])
+        redis.call('SET', ARGV[1], start_point)
+    else
+        error('safe start point key does not exist')
+    end
+end
+
+return redis.call('INCRBY', ARGV[1], ARGV[2])
+```
+
+To test this, minify the above lua code using [this tool](https://mothereff.in/lua-minifier). Then run it like the following:
+
+```bash
+> EVAL "[MINIFIED LUA CODE]" 0 "counter" 5 "safe"
+(error) ERR Error running script (call to f_e6cbf4449f047101464b7a6565153d17660af5ba): @user_script:1: user_script:1: safe start point key does not exist
+```
+
+The first time you should get an error, as the `safe` key has not been set.
+
+```bash
+> SET "safe" 55
+> EVAL "[MINIFIED LUA CODE]" 0 "counter" 5 "safe"
+(integer) 60
+```
+
+If you set the `safe` key, to an integer `55`, the subsequent run of your Lua code should result in `60` being returned.
+
+## Code Over The Wire Is Yuck
+
+To minimize the number of times you send Lua code over the wire to your Redis instance to only once, you can use Redis [Script Cache]() via the [`SCRIPT LOAD`]() command.
+
+```bash
+> SCRIPT LOAD "[MINIFIED LUA CODE]"
+"20d3a0615e5140cfa77cb0c76bf0b7ce0e12ebf3"
+```
+
+That string you see is a `SHA1` hash of your Lua code. You can use it to invoke your code
+later like the following:
+
+```bash
+> EVALSHA "20d3a0615e5140cfa77cb0c76bf0b7ce0e12ebf3" 0 "counter" 5 "safe"
+(integer) 65
+```
+
+# But Really, Why Scripting?
+
+According to the Redis Docs, when you evaluate a script via `EVAL` or `EVALSHA`, the Redis instance ensures that the entire program is executed atomically. As in, if one or more of the keys that were being changed by your program isn't changed then it is safe to assume the program has not yet executed.
+
+If at least one of the variables that were being modified by your script has been modified, it is safe to assume your entire program has executed.
+
+# JavaScript (Node) Implementation
+
+Install dependencies first (yes, [`ioredis`]() is the superior package)
+
+```bash
+npm install --save ioredis
+```
+
+Then refactor the following code to your own liking.
+
+```js
+import Redis from 'ioredis';
+
+const COMPLEX_INCRBY = `
+    local counter_exists = redis.call('EXISTS', ARGV[1])
+
+    if counter_exists == 0 then
+        local safe_start_exists = redis.call('EXISTS', ARGV[3])
+
+        if safe_start_exists == 1 then
+            local start_point = redis.call('GET', ARGV[3])
+            redis.call('SET', ARGV[1], start_point)
+        else
+            error('safe start point key does not exist')
+        end
+    end
+
+    return redis.call('INCRBY', ARGV[1], ARGV[2])
+`;
+
+async function main() {
+    const redis = new Redis();
+
+    const sha = await redis.script('LOAD', COMPLEX_INCRBY);
+
+    await redis.set('safe', 32);
+    const incrementedValue = await redis.evalsha(sha, 0, 'counter', 8, 'safe');
+
+    assert(incrementedValue === 40);
+}
+
+main();
+```
+
+Notice how we didn't need to minify when loading the script from JavaScript. This is because our libraries serialize the data to be separate so any string can be passed without sanitization.
+
+# Conclusion
+
+Lua is a very useful addition to your arsenal of tools to use with Redis, especially because of its support for atomicity within the Redis instance.

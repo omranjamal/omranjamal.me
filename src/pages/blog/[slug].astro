@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
+import { format } from "timeago.js";
 
 export async function getStaticPaths() {
   return (await getCollection("posts")).map((post) => ({
@@ -10,18 +11,48 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const post = await getEntryBySlug("posts", slug);
-const { Content, headers } = await post.render();
+const { Content } = await post.render();
 ---
 
 <Layout title={`${post.data.title} — Omran Jamal`}>
-  <h1 class="px-4 mt-24 text-6xl font-black max-w-[85%]">{post.data.title}</h1>
+  <div class="mt-24 text-lg uppercase pl-6 mb-2 font-semibold text-gray-400">
+    {format(post.data.edited, "en_US")}
+  </div>
 
-  <main class="flex flex-col mx-4 lg:flex-row-reverse">
-    <aside class="w-full lg:w-1/4">Authorr</aside>
+  <div class="px-4 text-6xl font-black max-w-[85%] mb-6">
+    {post.data.title}
+  </div>
+
+  <main class="flex flex-col mx-4">
+    <aside class="w-full flex flex-row mb-6">
+      <div>
+        <div class="uppercase text-gray-500 font-jetbrains-mono mb-1 text-sm">
+          Author
+        </div>
+        <div class="flex flex-row items-center flex-1">
+          <img
+            class="w-12 border-4 border-blue-100 h-12 rounded-full"
+            src="https://avatars.githubusercontent.com/u/4700757?v=4"
+            alt="Omran Jamal"
+          />
+          <div class="font-semibold mx-2">Omran Jamal</div>
+        </div>
+      </div>
+    </aside>
     <section class="w-full text-lg lg:w-3/4 font-inter">
       <div class="post">
         <Content />
       </div>
     </section>
   </main>
+
+  <div class="text-lg pl-6 font-semibold text-gray-400 space-x-4 mt-12 mb-6">
+    {
+      post.data.tags.map((tag) => (
+        <a href="#" class="text-gray-400">
+          #{tag}
+        </a>
+      ))
+    }
+  </div>
 </Layout>

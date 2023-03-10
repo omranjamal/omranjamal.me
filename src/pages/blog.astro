@@ -3,7 +3,15 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
 import { format } from "timeago.js";
 
-const posts = (await getCollection("posts")).reverse();
+const posts = (await getCollection("posts"))
+  .filter((post) => !post.data.unlisted)
+  .sort((a, b) => {
+    if (a.data.published > b.data.published) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
 ---
 
 <Layout title="Blog — Omran Jamal">

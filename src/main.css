@@ -7,28 +7,32 @@ html, body {
     font-family: 'Inter', sans-serif;
 }
 
-.post h1 {
-    @apply my-8 mt-8 text-5xl font-black font-jetbrains-mono;
-}
-
 .post h2 {
-    @apply my-4 mt-8 text-4xl font-black font-jetbrains-mono;
+    @apply my-8 mt-12 text-5xl font-black font-jetbrains-mono;
 }
 
 .post h3 {
-    @apply my-6 mt-8 text-2xl font-bold font-jetbrains-mono;
+    @apply my-4 mt-12 text-4xl font-black font-jetbrains-mono;
 }
 
 .post h4 {
-    @apply my-4 mt-8 text-xl font-semibold font-jetbrains-mono;
+    @apply my-6 mt-12 text-2xl font-bold font-jetbrains-mono;
 }
 
 .post h5 {
-    @apply my-2 mt-8 text-lg font-semibold font-jetbrains-mono;
+    @apply my-4 mt-12 text-xl font-semibold font-jetbrains-mono;
+}
+
+.post h6 {
+    @apply my-2 mt-12 text-lg font-semibold font-jetbrains-mono;
 }
 
 .post p {
-    @apply px-2 my-3;
+    @apply px-0 my-3;
+}
+
+.post a {
+    @apply underline-offset-2 hover:underline-offset-4 transition-all underline text-pink-500;
 }
 
 .post ol {
