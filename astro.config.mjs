@@ -19,6 +19,7 @@ import behead from "remark-behead";
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://omranjamal.me',
   integrations: [
     tailwind({
       config: { applyBaseStyles: false },
@@ -26,7 +27,9 @@ export default defineConfig({
     mdx(),
     react(),
     prefetch(),
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes('draft-')
+    }),
   ],
   markdown: {
     remarkPlugins: [[behead, { minDepth: 2 }]],

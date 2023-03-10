@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /blog/draft-*
+
+Sitemap: https://omranjamal.me/sitemap-index.xml

@@ -30,7 +30,9 @@ const path = location.pathname;
       rel="stylesheet"
     />
 
-    <slot name="head"/>
+    <link rel="sitemap" href="/sitemap-index.xml">
+
+    <slot name="head" />
   </head>
   <body>
     <Navigation path={path} client:idle />
@@ -52,5 +54,23 @@ const path = location.pathname;
         </p>
       </div>
     </footer>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-Q4B9Z8LJHR"
+    >
+    </script>
+    
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+
+      gtag("js", new Date());
+      gtag("config", "G-Q4B9Z8LJHR");
+    </script>
   </body>
 </html>

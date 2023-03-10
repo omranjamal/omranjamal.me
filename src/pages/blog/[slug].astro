@@ -5,12 +5,13 @@ import { format } from "timeago.js";
 
 export async function getStaticPaths() {
   return (await getCollection("posts")).map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: `${post.data.unlisted ? 'draft-' : ''}${post.slug}` },
   }));
 }
 
 const { slug } = Astro.params;
-const post = await getEntryBySlug("posts", slug);
+
+const post = await getEntryBySlug("posts", slug.replace('draft-', ''));
 const { Content } = await post.render();
 ---
 
