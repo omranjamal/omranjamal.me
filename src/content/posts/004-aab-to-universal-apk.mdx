@@ -1,0 +1,45 @@
+---
+title: 📦 ➡️ 🤖 Generating Universal .APK Files From Android's .AAB Bundles
+published: 2023-06-06
+edited: 2023-06-06 22:25:00
+highlight: true
+unlisted: true
+tags:
+  - android
+  - react-native
+  - expo
+  - playstore
+---
+
+Say for some reason you got yourself a [`.aab`](https://developer.android.com/guide/app-bundle) file on 
+your hands when developing for Android and you want to test the app by installing it on your phone
+ without going through PlayStore for whatever reasons.
+
+It could be from Android Studio's build feature, or some cloud (or cli) app build service like Expo's EAS
+it doesn't matter, as long as you have a [keystore](https://developer.android.com/training/articles/keystore) 
+and the credentials to the said keysotre, you can convert it into a universal APK.
+
+# You Need
+
+1. The `java` command available on your command line `PATH`
+2. The `.aab` that you hate (or love, idk).
+3. The [Keystore](https://developer.android.com/training/articles/keystore) and Credentials to the Keystore.
+
+# Download Google's Bundle Tool
+
+Go to the Releases Link on the repo, and download the latest `bundletool-all-[version].jar` jar file.
+
+Link: [https://github.com/google/bundletool/releases](https://github.com/google/bundletool/releases)
+
+# Generate The APK
+
+```bash
+java -jar [DOWNLOADED_JAR_PATH] build-apks \
+  --bundle=[BUNDLE_PATH]
+  --output=[APK_PATH]
+  --ks=[KEYSTORE_PATH]
+  --ks-pass="pass:[KEYSTORE_PASSWORD]"
+  --ks-key-alias="[KEYSTORE_ALIAS]"
+  --key-pass="pass:[KEYSTORE_ALIAS_PASSWORD]"
+```
+
