@@ -51,7 +51,7 @@ html, body {
     @apply px-5 py-4 my-4 border-b-4 rounded-md border-b-black;
 }
 
-.post p code {
+.post p code, .post li code  {
     @apply px-1 py-0 bg-yellow-100 border-2 border-yellow-200 rounded-md;
 }
 
