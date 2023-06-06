@@ -35,11 +35,18 @@ Link: [https://github.com/google/bundletool/releases](https://github.com/google/
 
 ```bash
 java -jar [DOWNLOADED_JAR_PATH] build-apks \
-  --bundle=[BUNDLE_PATH]
-  --output=[APK_PATH]
-  --ks=[KEYSTORE_PATH]
-  --ks-pass="pass:[KEYSTORE_PASSWORD]"
-  --ks-key-alias="[KEYSTORE_ALIAS]"
+  --bundle=[BUNDLE_PATH] \ 
+  --output=[APK_PATH] \ 
+  --mode=universal \ 
+  --ks=[KEYSTORE_PATH] \
+  --ks-pass="pass:[KEYSTORE_PASSWORD]" \ 
+  --ks-key-alias="[KEYSTORE_ALIAS]" \
   --key-pass="pass:[KEYSTORE_ALIAS_PASSWORD]"
 ```
+
+1. The `pass:` part of the passwords is important. Leave as-is, as the literal value
+`pass:`
+2. `--mode=universal` generates universal APKs, otherwise 
+you'll get a zip file with multiple APKs for multiple architectures.
+
 
