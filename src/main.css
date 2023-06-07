@@ -52,7 +52,20 @@ html, body {
 }
 
 .post p code, .post li code  {
-    @apply px-1 py-0 bg-yellow-100 border-2 border-yellow-200 rounded-md;
+    @apply px-1 py-0 bg-yellow-50 border-2 border-yellow-200 rounded-md;
+}
+
+.post h1 code,
+.post h2 code,
+.post h3 code,
+.post h4 code,
+.post h5 code,
+.post h6 code {
+    @apply bg-yellow-50 border-2 border-yellow-200 rounded-md;
+}
+
+.post li {
+    @apply mb-4;
 }
 
 ::selection {

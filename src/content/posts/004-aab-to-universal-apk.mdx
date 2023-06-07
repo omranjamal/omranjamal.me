@@ -3,7 +3,6 @@ title: 📦 ➡️ 🤖 Generating Universal .APK Files From Android's .AAB Bund
 published: 2023-06-06
 edited: 2023-06-06 22:25:00
 highlight: true
-unlisted: true
 tags:
   - android
   - react-native
@@ -27,16 +26,24 @@ and the credentials to the said keysotre, you can convert it into a universal AP
 
 # Download Google's Bundle Tool
 
-Go to the Releases Link on the repo, and download the latest `bundletool-all-[version].jar` jar file.
+To download the latest, go to the Releases Link on the repo, 
+and download the latest `bundletool-all-[version].jar` jar file.
 
 Link: [https://github.com/google/bundletool/releases](https://github.com/google/bundletool/releases)
+
+You could just use the commandline though, and download the version what was used at the time
+of this writing.
+
+```bash
+wget https://github.com/google/bundletool/releases/download/1.15.1/bundletool-all-1.15.1.jar -O ~/Downloads/bundletool.jar
+```
 
 # Generate The APK
 
 ```bash
-java -jar [DOWNLOADED_JAR_PATH] build-apks \
+java -jar ~/Downloads/bundletool.jar build-apks \
   --bundle=[BUNDLE_PATH] \ 
-  --output=[APK_PATH] \ 
+  --output=[APK_DIRECTORY]/[SOME_FILENAME].apk \ 
   --mode=universal \ 
   --ks=[KEYSTORE_PATH] \
   --ks-pass="pass:[KEYSTORE_PASSWORD]" \ 
@@ -44,9 +51,23 @@ java -jar [DOWNLOADED_JAR_PATH] build-apks \
   --key-pass="pass:[KEYSTORE_ALIAS_PASSWORD]"
 ```
 
-1. The `pass:` part of the passwords is important. Leave as-is, as the literal value
+1. The `.apks` extension probably feels really weird, but it's apparently necessary to be 
+explicit that it will be an archive of files not just one apk file.
+2. The `pass:` part of the passwords is important. Leave as-is, as the literal value
 `pass:`
-2. `--mode=universal` generates universal APKs, otherwise 
+3. `--mode=universal` generates universal APKs, otherwise 
 you'll get a zip file with multiple APKs for multiple architectures.
 
 
+# Extract The `.apk` File
+
+You will be left with a `.apks` file in the APK directory that you input in the command
+above. This file is simply a `.zip` file with a different extension. You can rename it to a `.zip`
+and use your a GUI tool to extract it.
+
+You can also just use the commandline as such:
+
+```bash
+cd [APK_DIRECTORY]
+unzip ./[SOME_FILE].apks
+```
