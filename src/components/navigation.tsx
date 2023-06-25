@@ -78,10 +78,10 @@ export default function Navigation({ path }: { path: string }) {
 
           <a
             target={"_blank"}
-            href="mailto:omran@bonton.app"
+            href="mailto:omran@omranjamal.me"
             className="pl-5 space-x-2 transition-colors hover:text-pink-600"
           >
-            <strong className="font-semibold">omran</strong>@bonton.app
+            <strong className="font-semibold">omran</strong>@omranjamal.me
             <ArrowRight className="inline w-4" />
             <Mail className="inline w-4" />
           </a>
