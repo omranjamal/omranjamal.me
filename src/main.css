@@ -68,6 +68,10 @@ html, body {
     @apply mb-4;
 }
 
+.post em {
+    @apply text-slate-700;
+}
+
 ::selection {
   color: black;
   @apply bg-pink-600;
