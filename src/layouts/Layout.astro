@@ -5,6 +5,10 @@ import "../main.css";
 export interface Props {
   title: string;
   pageDescription?: string;
+  
+  narrowOGImageURL?: string;
+  mediumOGImageURL?: string;
+  wideOGImageURL?: string;
 }
 
 const { title } = Astro.props;
@@ -12,7 +16,8 @@ const { title } = Astro.props;
 const location = new URL(Astro.request.url);
 const path = location.pathname;
 
-const DESCRIPTION = "Engineer and entreprenuer who just can't shut up about connecting the world 🌎.";
+const DESCRIPTION =
+  "Engineer and entreprenuer who just can't shut up about connecting the world 🌎.";
 ---
 
 <!DOCTYPE html>
@@ -40,17 +45,48 @@ const DESCRIPTION = "Engineer and entreprenuer who just can't shut up about conn
 
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta name="og:site_name" content="Omran Jamal"/>
-    <meta name="og:title" content={title}/>
-    <meta name="og:description" content={Astro.props?.pageDescription ?? DESCRIPTION}/>
-    <meta name="og:url" content={new URL(Astro.url.pathname, Astro.site)}/>
+    <meta name="og:site_name" content="Omran Jamal" />
+    <meta name="og:title" content={title} />
+    <meta
+      name="og:description"
+      content={Astro.props?.pageDescription ?? DESCRIPTION}
+    />
+    <meta name="og:url" content={new URL(Astro.url.pathname, Astro.site)} />
 
     <meta name="twitter:site" content="OmranJamal" />
+    <meta name="twitter:domain" content="omranjamal.me  " />
+    <meta
+      name="twitter:url"
+      content={new URL(Astro.url.pathname, Astro.site)}
+    />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:creator" content="OmranJamal" />
-    <meta name="twitter:description" content={Astro.props?.pageDescription ?? DESCRIPTION} />
+    <meta
+      name="twitter:description"
+      content={Astro.props?.pageDescription ?? DESCRIPTION}
+    />
+    <meta
+      name="twitter:image"
+      content={Astro.props?.narrowOGImageURL ?? '/images/og-images/homepage-2_1.png'}
+    />
 
     <slot name="head" />
+
+    <meta
+      property="og:image"
+      itemprop="image"
+      content={Astro.props?.mediumOGImageURL ?? '/images/og-images/homepage-1-91_1.png'}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta
+      property="og:image"
+      itemprop="image"
+      content={Astro.props?.wideOGImageURL ?? '/images/og-images/homepage-4_3.png'}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="900" />
   </head>
   <body>
     <Navigation path={path} client:idle />
