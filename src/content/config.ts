@@ -9,6 +9,7 @@ const postsCollection = defineCollection({
     image: z.string().optional(),
     unlisted: z.boolean().optional(),
     highlight: z.boolean().optional(),
+    'short-description': z.string().optional()
   }),
 });
 

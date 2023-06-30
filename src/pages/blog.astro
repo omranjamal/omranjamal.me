@@ -15,7 +15,11 @@ const posts = (await getCollection("posts"))
   });
 ---
 
-<Layout title="Blog — Omran Jamal">
+<Layout title="Blog — Omran Jamal" pageDescription={"a blog by Omran Jamal about the things in (software) engineering that are a bit less spoken of."}>
+  <Fragment slot="head">
+    <meta name="og:type" content="website" />
+  </Fragment>
+
   <div class="px-4">
     <h1 class="my-16 text-6xl font-black">Blog</h1>
     <section class="mb-32 space-y-8">
