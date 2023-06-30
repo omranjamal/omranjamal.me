@@ -1,7 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
-import { format } from "timeago.js";
+import { HumanTime } from '../../components/human-time';
 
 export async function getStaticPaths() {
   return (await getCollection("posts")).map((post) => ({
@@ -18,7 +18,7 @@ const { Content } = await post.render();
 <Layout title={`${post.data.title} — Omran Jamal`}>
   <article itemscope itemtype="http://schema.org/Article">
     <time itemprop="dateModified" datetime={post.data.edited.toISOString()} title={post.data.edited} class="block mt-24 text-lg uppercase pl-6 mb-2 font-semibold text-gray-400">
-      {format(post.data.edited, "en_US")}
+      <HumanTime time={post.data.edited} client:idle />
     </time>
   
     <h1 class="px-4 text-6xl font-black max-w-[85%] mb-6" itemprop="headline">

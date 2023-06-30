@@ -1,7 +1,8 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
-import { format } from "timeago.js";
+import { HumanTime } from '../components/human-time';
+
 
 const posts = (await getCollection("posts"))
   .filter((post) => !post.data.unlisted)
@@ -33,7 +34,7 @@ const posts = (await getCollection("posts"))
                 ))}
               </div>
               <div class="text-sm text-gray-500 uppercase">
-                {format(post.data.edited, "en_US")}
+                <HumanTime time={post.data.edited} client:idle />
               </div>
             </div>
           </div>
