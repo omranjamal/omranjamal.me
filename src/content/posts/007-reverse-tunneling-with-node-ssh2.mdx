@@ -178,6 +178,14 @@ const client = new Client();
 
 client.on("ready", () => {
   console.log("SSH CONNECTION: READY");
+
+  client.forwardIn("", PORT, (error) => {
+    if (error) {
+      throw error;
+    }
+
+    console.log(`LISTENING: server:${PORT}`);
+  });
 });
 
 client.on("tcp connection", (details, accept, reject) => {
