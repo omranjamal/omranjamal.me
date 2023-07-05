@@ -1,0 +1,210 @@
+---
+title: 🕳️🔌🕳️ Reverse SSH Tunnels from NodeJS with ssh2
+published: 2023-07-6 1:41:00+6
+edited: 2023-07-6 1:41:00+6
+tags:
+  - tunneling
+  - ssh
+  - nodejs
+  - quickie
+---
+
+# Foreword
+
+Honestly I was absolutely blown away by the [`ssh2` library](https://www.npmjs.com/package/ssh2) on npm.
+The fact that someone actually went through the trouble and put in the hard work to re-implement the
+[SSH protocol](https://datatracker.ietf.org/doc/html/rfc4253) in pure nodejs is mind boggling and amazlingly
+cool.
+
+Of course, as human wants are endless, I decided that I wanted to establish
+[SSH tunnels](https://www.ssh.com/academy/ssh/tunneling-example) with it.
+Especially [reverse SSH tunnels](https://www.howtogeek.com/428413/what-is-reverse-ssh-tunneling-and-how-to-use-it/).
+
+> For forward ssh tunnels (the usual one), I would recommend using [`ssh2-promise`](https://www.npmjs.com/package/ssh2-promise)'s `addTunnel`
+> method as it's a very clean and simple interface around raw `ssh2`.
+
+# TL;DR?
+
+Scroll to the end. Find the [Putting It All Together](#putting-it-all-together) section.
+
+# Reverse SSH Tunnels
+
+## First, Establish The Connection
+
+Easy enough. `ssh2`'s documentation is great in this regard.
+
+```javascript
+import { Client } from "ssh2";
+
+const client = new Client();
+
+client.on("ready", () => {
+  console.log("SSH CONNECTION: READY");
+});
+
+client.connect({
+  host: "server.example.com",
+  port: 22,
+  username: "jogndoe",
+
+  // probably best to use a ssh key here instead.
+  password: "12345678",
+});
+```
+
+It doesn't matter which authentication method you use, as long as it
+established the connection correctly.
+
+## Bring The Server Port here
+
+It's nice of the mantainers to literally call it `forwardIn`. Add this
+inside the `on('ready')` function so that we're not trying to issue forwarding commands
+even before a connection is established.
+
+```js
+client.on("ready", () => {
+  console.log("SSH CONNECTION: READY");
+
+  client.forwardIn("" /* bind address */, PORT, (error) => {
+    if (error) {
+      throw error;
+    }
+
+    console.log(`LISTENING: server:${PORT}`);
+  });
+});
+```
+
+Note, that the bind address in an empty string. This is so that the server can decide
+which interface to attach to, but if your [server allows it](https://www.ssh.com/academy/ssh/tunneling-example#remote-forwarding), you may pass in the string
+`0.0.0.0` instead to listen on all interfaces.
+
+## Forward Connection Requests to a Local Server
+
+### Start Listening For Connections
+
+Also, a part of the documentation.
+
+```js
+client.on("tcp connection", (details, accept, reject) => {
+  console.log("TCP: INCOMING", details);
+});
+```
+
+Now, everytime a client tries to connected ot the server port, it should the listener
+function to this event should trigger.
+
+1. `details` contains information about the tcp connection being established.
+2. `accept` is a function that takes no arguments, but when called, accepts the
+   remote tcp connection and returns a nodejs socket stream.
+3. `reject` is kinda self explanatory.
+
+We'll obviously be using `accept()` but, the `details` object is quite useful too.
+It contains information such as the port being connected to, which comes in handy
+if we're establishing multiple port forward-ins.
+
+### Forwarding
+
+#### Import `Socket` from `net`
+
+At the start of the file, add an import for node's internal package
+that enable working with raw TCP sockets. The [`net` package](https://codeforgeek.com/nodejs-net-module/).
+
+```js
+import { Socket } from "net";
+```
+
+#### Establish the Local Connection First
+
+Do this within the tcp connection listener, based on the success of this connection
+we will `accept()` or `reject()` the remote tcp connection.
+
+```js
+client.on("tcp connection", (details, accept, reject) => {
+  console.log("TCP: INCOMING", details);
+
+  // Create the socket
+  const tcpClient = new Socket();
+
+  // Connect to a local port (change the first
+  // two arguments to your requirement)
+  tcpClient.connect(8080, "localhost", () => {
+    console.log(`LOCAL TCP: CONNECTED`);
+  });
+});
+```
+
+#### Accept & Interconnect
+
+If you have worked with [NodeJS streams](https://www.freecodecamp.org/news/node-js-streams-everything-you-need-to-know-c9141306be93/), 
+you should feel right at home with connecting streams together with `pipe()`.
+
+```js
+tcpClient.connect(8080, "localhost", () => {
+  console.log(`LOCAL TCP: CONNECTED`);
+
+  // Accept the remote stream
+  const serverStream = accept();
+
+  // Pipe the output of the remote stream to the
+  // local stream's input.
+  serverStream.pipe(tcpClient);
+
+  // Pipe the output of the local stream to the
+  // remote stream's input.
+  tcpClient.pipe(serverStream);
+});
+```
+
+#### Handle Errors
+
+I mean, we don't want the entire node process to crash do we?
+
+```js
+tcpClient.on("error", (error) => {
+  console.error(error);
+});
+```
+
+# Putting It All Together
+
+This should just work.
+
+```javascript
+import { Client } from "ssh2";
+import { Socket } from "net";
+
+const client = new Client();
+
+client.on("ready", () => {
+  console.log("SSH CONNECTION: READY");
+});
+
+client.on("tcp connection", (details, accept, reject) => {
+  console.log("TCP: INCOMING", details);
+
+  const tcpClient = new Socket();
+
+  tcpClient.connect(8080, "localhost", () => {
+    console.log(`LOCAL TCP: CONNECTED`);
+
+    const serverStream = accept();
+
+    serverStream.pipe(tcpClient);
+    tcpClient.pipe(serverStream);
+  });
+
+  tcpClient.on("error", (error) => {
+    console.error(error);
+  });
+});
+
+client.connect({
+  host: "server.example.com",
+  port: 22,
+  username: "jogndoe",
+
+  // probably best to use a ssh key here instead.
+  password: "12345678",
+});
+```
