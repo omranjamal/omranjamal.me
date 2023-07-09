@@ -1,0 +1,70 @@
+---
+title: 📂➡📂 Copy Files From Ubuntu CLI; Paste in File Manager
+published: 2023-07-09 19:22:00+6
+edited: 2023-07-09 19:22:00+6
+tags:
+  - cli
+  - linux
+  - files
+  - quickie
+---
+
+Shout out to [Stéphane Chazelas](https://unix.stackexchange.com/users/22565/st%c3%a9phane-chazelas) and
+[his answer](https://unix.stackexchange.com/a/53537/577063) to the Unix Stackexchange question 
+[**"Copying files from command line to clipboard"**](https://unix.stackexchange.com/questions/53503/copying-files-from-command-line-to-clipboard).
+
+They gave me a major big-brain moment, and through his answer I learned that there are [3 different kinds](https://www.freedesktop.org/wiki/Specifications/ClipboardsWiki/)
+of clipboards in X11, and also that there are [target](https://dev.to/thumbone/inspecting-the-clipboard-on-linux-3hb0) on copied values that
+allow applications to extract only the copied values that are compatible with itself.
+
+# Concept: Copying a File
+
+> Note: I only just tested this with `nautilus` the default file manager on Ubuntu.
+
+Copying files in the default file manager usually involves writing the absolute path of the file
+to the clipboard with a specific format and to a specific target atom.
+
+For ubuntu, the format is the following:
+
+```
+copy
+file://[file path 1]
+file://[file path 2]
+file://[file path 3]
+```
+
+_Note: The `file://` part, effectively turning this into a proper URI is important._
+
+The target is ...
+
+```
+x-special/gnome-copied-files
+```
+
+# Copying From The CLI
+
+To achieve this, we will first install a cli utility that allows for messing around
+with the clipboards. It's called `xclip`
+
+```bash
+sudo apt install xclip
+```
+
+Say to copy the file with the path `/tmp/tomato.txt`, we must then first create the format
+that the system expects.
+
+```bash
+printf "copy\nfile:///tmp/tomato.txt\0"
+```
+
+_Note: The `\0` at the end there, removes all ambiguity as to where the file paths end._
+
+We must then pipe the output of this `printf` command, to `xclip` with the proper
+target atom selected.
+
+```bash
+printf "copy\nfile:///tmp/tomato.txt\0" | \
+    xclip -i -selection clipboard -t x-special/gnome-copied-files
+```
+
+and done! You can now paste in your file manager.
