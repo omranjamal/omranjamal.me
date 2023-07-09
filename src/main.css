@@ -49,6 +49,9 @@ html, body {
 
 .post pre {
     @apply px-5 py-4 my-4 border-b-4 rounded-md border-b-black;
+    @apply scrollbar-thin scrollbar-track-rounded-full scrollbar-thumb-slate-500;
+    @apply scrollbar-thumb-rounded-full scrollbar-track-transparent;
+    @apply border-4 border-l-[#232136] border-[#232136];
 }
 
 .post p code, .post li code  {
