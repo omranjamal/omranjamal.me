@@ -27,7 +27,7 @@ const posts = (await getCollection("posts"))
         posts.map((post) => (
           <div class="block font-jetbrains-mono">
             <a href={`/blog/${post.slug}`} class="text-2xl font-bold">
-              {post.data.title}
+              {post.data?.['on-page-title-prefix'] + ' ' ?? ''}{post.data.title}
             </a>
             <div class="md:ml-12">
               <div class="space-x-4">

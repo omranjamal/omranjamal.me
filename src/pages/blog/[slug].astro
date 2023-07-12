@@ -46,9 +46,9 @@ const { Content } = await post.render();
       <HumanTime time={post.data.edited} client:idle />
     </time>
 
-    <h1 class="px-4 text-6xl font-black max-w-[85%] mb-6" itemprop="headline">
-      {post.data.title}
-    </h1>
+    <div class="px-4 text-6xl font-black max-w-[85%] mb-6" itemprop="headline">
+      {post.data?.['on-page-title-prefix'] + ' ' ?? ''}<h1 class="inline">{post.data.title}</h1>
+    </div>
 
     <main class="flex flex-col mx-4">
       <aside class="w-full flex flex-row mb-6">
