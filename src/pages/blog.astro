@@ -1,8 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { getCollection, getEntryBySlug } from "astro:content";
-import { HumanTime } from '../components/human-time';
-
+import { HumanTime } from "../components/human-time";
 
 const posts = (await getCollection("posts"))
   .filter((post) => !post.data.unlisted)
@@ -15,7 +14,10 @@ const posts = (await getCollection("posts"))
   });
 ---
 
-<Layout title="Blog — Omran Jamal" pageDescription={"a blog by Omran Jamal about the things in (software) engineering that are a bit less spoken of."}>
+<Layout
+  title="Blog — Omran Jamal"
+  pageDescription={"a blog by Omran Jamal about the things in (software) engineering that are a bit less spoken of."}
+>
   <Fragment slot="head">
     <meta name="og:type" content="website" />
   </Fragment>
@@ -26,8 +28,13 @@ const posts = (await getCollection("posts"))
       {
         posts.map((post) => (
           <div class="block font-jetbrains-mono">
-            <a href={`/blog/${post.slug}`} class="text-2xl font-bold">
-              {post.data?.['on-page-title-prefix'] + ' ' ?? ''}{post.data.title}
+            <a
+              href={`/blog/${post.slug}`}
+              class="text-2xl font-bold"
+              transition:name={`article-title_${post.id}`}
+            >
+              {post.data?.["on-page-title-prefix"] + " " ?? ""}
+              {post.data.title}
             </a>
             <div class="md:ml-12">
               <div class="space-x-4">
@@ -37,7 +44,10 @@ const posts = (await getCollection("posts"))
                   </a>
                 ))}
               </div>
-              <div class="text-sm text-gray-500 uppercase">
+              <div
+                class="text-sm text-gray-500 uppercase"
+                transition:name={`article-time_${post.id}`}
+              >
                 <HumanTime time={post.data.edited} client:idle />
               </div>
             </div>

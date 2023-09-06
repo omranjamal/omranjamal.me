@@ -1,11 +1,12 @@
 ---
 import Navigation from "../components/navigation";
 import "../main.css";
+import { ViewTransitions } from "astro:transitions";
 
 export interface Props {
   title: string;
   pageDescription?: string;
-  
+
   narrowOGImageURL?: string;
   mediumOGImageURL?: string;
   wideOGImageURL?: string;
@@ -29,7 +30,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <meta name="robots" content="all">
+    <meta name="robots" content="all" />
     <meta name="generator" content={Astro.generator} />
 
     <title>{title}</title>
@@ -57,13 +58,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     />
     <meta name="og:url" content={canonicalURL} />
 
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="OmranJamal" />
     <meta name="twitter:domain" content="omranjamal.me  " />
-    <meta
-      name="twitter:url"
-      content={canonicalURL}
-    />
+    <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:creator" content="OmranJamal" />
     <meta
@@ -72,7 +70,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     />
     <meta
       name="twitter:image"
-      content={Astro.props?.narrowOGImageURL ?? '/images/og-images/homepage-2_1.png'}
+      content={Astro.props?.narrowOGImageURL ??
+        "/images/og-images/homepage-2_1.png"}
     />
 
     <slot name="head" />
@@ -80,7 +79,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta
       property="og:image"
       itemprop="image"
-      content={Astro.props?.mediumOGImageURL ?? '/images/og-images/homepage-1-91_1.png'}
+      content={Astro.props?.mediumOGImageURL ??
+        "/images/og-images/homepage-1-91_1.png"}
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -88,12 +88,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta
       property="og:image"
       itemprop="image"
-      content={Astro.props?.wideOGImageURL ?? '/images/og-images/homepage-4_3.png'}
+      content={Astro.props?.wideOGImageURL ??
+        "/images/og-images/homepage-4_3.png"}
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="900" />
+
+    <ViewTransitions />
   </head>
-  <body class="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 scrollbar-thumb-rounded-full border-r-8 border-x-white">
+  <body
+    class="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 scrollbar-thumb-rounded-full border-r-8 border-x-white"
+  >
     <Navigation path={path} client:idle />
 
     <main class="container max-w-screen-lg mx-auto">

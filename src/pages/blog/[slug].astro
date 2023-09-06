@@ -30,11 +30,7 @@ const { Content } = await post.render();
       name="article:modified_time"
       content={post.data.edited.toISOString()}
     />
-    {
-      post.data.tags.map((tag) => (
-        <meta name="article:tag" content={tag} />
-      ))
-    }
+    {post.data.tags.map((tag) => <meta name="article:tag" content={tag} />)}
   </Fragment>
 
   <article itemscope itemtype="http://schema.org/Article">
@@ -42,12 +38,19 @@ const { Content } = await post.render();
       itemprop="dateModified"
       datetime={post.data.edited.toISOString()}
       class="block mt-24 text-lg uppercase pl-6 mb-2 font-semibold text-gray-400"
+      transition:name={`article-time_${post.id}`}
     >
       <HumanTime time={post.data.edited} client:idle />
     </time>
 
-    <div class="px-4 text-6xl font-black max-w-[85%] mb-6" itemprop="headline">
-      {post.data?.['on-page-title-prefix'] + ' ' ?? ''}<h1 class="inline">{post.data.title}</h1>
+    <div
+      class="px-4 text-6xl font-black max-w-[85%] mb-6"
+      itemprop="headline"
+      transition:name={`article-title_${post.id}`}
+    >
+      {post.data?.["on-page-title-prefix"] + " " ?? ""}<h1 class="inline">
+        {post.data.title}
+      </h1>
     </div>
 
     <main class="flex flex-col mx-4">
