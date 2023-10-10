@@ -1,98 +1,104 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { getCollection, getEntryBySlug } from "astro:content";
-import { HumanTime } from "../../components/human-time";
+import Layout from '../../layouts/Layout.astro';
+import {getCollection, getEntryBySlug} from 'astro:content';
+import {HumanTime} from '../../components/human-time';
+
+export const prerender = true;
 
 export async function getStaticPaths() {
-  return (await getCollection("posts")).map((post) => ({
-    params: { slug: `${post.data.unlisted ? "draft-" : ""}${post.slug}` },
-  }));
+    return (await getCollection('posts')).map((post) => ({
+        params: {slug: `${post.data.unlisted ? 'draft-' : ''}${post.slug}`},
+    }));
 }
 
-const { slug } = Astro.params;
+const {slug} = Astro.params;
 
-const post = await getEntryBySlug("posts", slug.replace("draft-", ""));
-const { Content } = await post.render();
+const post = await getEntryBySlug('posts', slug.replace('draft-', ''));
+const {Content} = await post.render();
 ---
 
 <Layout
-  title={`${post.data.title} — Omran Jamal`}
-  pageDescription={post.data["short-description"] ?? post.data.title}
+    title={`${post.data.title} — Omran Jamal`}
+    pageDescription={post.data['short-description'] ?? post.data.title}
 >
-  <Fragment slot="head">
-    <meta name="og:type" content="article" />
-    <meta name="article:author" content="https://omranjamal.me" />
-    <meta
-      name="article:published_time"
-      content={post.data.published.toISOString()}
-    />
-    <meta
-      name="article:modified_time"
-      content={post.data.edited.toISOString()}
-    />
-    {post.data.tags.map((tag) => <meta name="article:tag" content={tag} />)}
-  </Fragment>
+    <Fragment slot="head">
+        <meta name="og:type" content="article" />
+        <meta name="article:author" content="https://omranjamal.me" />
+        <meta
+            name="article:published_time"
+            content={post.data.published.toISOString()}
+        />
+        <meta
+            name="article:modified_time"
+            content={post.data.edited.toISOString()}
+        />
+        {post.data.tags.map((tag) => <meta name="article:tag" content={tag} />)}
+    </Fragment>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <time
-      itemprop="dateModified"
-      datetime={post.data.edited.toISOString()}
-      class="block mt-24 text-lg uppercase pl-6 mb-2 font-semibold text-gray-400"
-      transition:name={`article-time_${post.id}`}
-    >
-      <HumanTime time={post.data.edited} client:idle />
-    </time>
-
-    <div
-      class="px-4 text-6xl font-black max-w-[85%] mb-6"
-      itemprop="headline"
-      transition:name={`article-title_${post.id}`}
-    >
-      {post.data?.["on-page-title-prefix"] + " " ?? ""}<h1 class="inline">
-        {post.data.title}
-      </h1>
-    </div>
-
-    <main class="flex flex-col mx-4">
-      <aside class="w-full flex flex-row mb-6">
-        <div
-          itemprop="author publisher"
-          itemscope
-          itemtype="http://schema.org/Person"
+    <article itemscope itemtype="http://schema.org/Article">
+        <time
+            itemprop="dateModified"
+            datetime={post.data.edited.toISOString()}
+            class="block mt-24 text-lg uppercase pl-6 mb-2 font-semibold text-gray-400"
+            transition:name={`article-time_${post.id}`}
         >
-          <div class="uppercase text-gray-500 font-jetbrains-mono mb-1 text-sm">
-            Author
-          </div>
-          <div class="flex flex-row items-center flex-1">
-            <img
-              class="w-12 border-4 border-blue-100 h-12 rounded-full"
-              src="https://avatars.githubusercontent.com/u/4700757?v=4"
-              alt="Omran Jamal"
-              itemprop="image"
-            />
-            <div class="font-semibold mx-2" itemprop="name">
-              <span itemprop="givenName">Omran</span>
-              <span itemprop="familyName">Jamal</span>
-            </div>
-          </div>
-        </div>
-      </aside>
+            <HumanTime time={post.data.edited} client:idle />
+        </time>
 
-      <section class="w-full text-lg lg:w-3/4 font-inter">
-        <div class="post" itemprop="articleBody">
-          <Content />
+        <div
+            class="px-4 text-6xl font-black max-w-[85%] mb-6"
+            itemprop="headline"
+            transition:name={`article-title_${post.id}`}
+        >
+            {post.data?.['on-page-title-prefix'] + ' ' ?? ''}<h1 class="inline">
+                {post.data.title}
+            </h1>
         </div>
-      </section>
-    </main>
 
-    <div class="text-lg pl-6 font-semibold text-gray-400 space-x-4 mt-12 mb-6">
-      {
-        post.data.tags.map((tag) => (
-          <a href="#" class="text-gray-400">
-            #{tag}
-          </a>
-        ))
-      }
-    </div>
-  </article>
+        <main class="flex flex-col mx-4">
+            <aside class="w-full flex flex-row mb-6">
+                <div
+                    itemprop="author publisher"
+                    itemscope
+                    itemtype="http://schema.org/Person"
+                >
+                    <div
+                        class="uppercase text-gray-500 font-jetbrains-mono mb-1 text-sm"
+                    >
+                        Author
+                    </div>
+                    <div class="flex flex-row items-center flex-1">
+                        <img
+                            class="w-12 border-4 border-blue-100 h-12 rounded-full"
+                            src="https://avatars.githubusercontent.com/u/4700757?v=4"
+                            alt="Omran Jamal"
+                            itemprop="image"
+                        />
+                        <div class="font-semibold mx-2" itemprop="name">
+                            <span itemprop="givenName">Omran</span>
+                            <span itemprop="familyName">Jamal</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="w-full text-lg lg:w-3/4 font-inter">
+                <div class="post" itemprop="articleBody">
+                    <Content />
+                </div>
+            </section>
+        </main>
+
+        <div
+            class="text-lg pl-6 font-semibold text-gray-400 space-x-4 mt-12 mb-6"
+        >
+            {
+                post.data.tags.map((tag) => (
+                    <a href="#" class="text-gray-400">
+                        #{tag}
+                    </a>
+                ))
+            }
+        </div>
+    </article>
 </Layout>
