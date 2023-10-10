@@ -1,6 +1,5 @@
 import { defineConfig } from "astro/config";
 
-// https://astro.build/config
 import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
@@ -14,28 +13,41 @@ import prefetch from "@astrojs/prefetch";
 
 // https://astro.build/config
 import sitemap from "@astrojs/sitemap";
-
 import behead from "remark-behead";
 
 // https://astro.build/config
+import cloudflare from "@astrojs/cloudflare";
+
+// https://astro.build/config
 export default defineConfig({
-  site: 'https://omranjamal.me',
+  site: "https://omranjamal.me",
   integrations: [
     tailwind({
-      config: { applyBaseStyles: false },
+      config: {
+        applyBaseStyles: false,
+      },
     }),
     mdx(),
     react(),
     prefetch(),
     sitemap({
-      filter: (page) => !page.includes('draft-')
+      filter: (page) => !page.includes("draft-"),
     }),
   ],
   markdown: {
-    remarkPlugins: [[behead, { minDepth: 2 }]],
+    remarkPlugins: [
+      [
+        behead,
+        {
+          minDepth: 2,
+        },
+      ],
+    ],
     gfm: true,
     shikiConfig: {
       theme: "rose-pine-moon",
     },
   },
+  output: "server",
+  adapter: cloudflare(),
 });
