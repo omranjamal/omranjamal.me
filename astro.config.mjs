@@ -30,9 +30,6 @@ export default defineConfig({
     mdx(),
     react(),
     prefetch(),
-    sitemap({
-      filter: (page) => !page.includes("draft-"),
-    }),
   ],
   markdown: {
     remarkPlugins: [

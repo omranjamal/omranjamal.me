@@ -16,7 +16,6 @@
     "@astrojs/prefetch": "0.4.0",
     "@astrojs/prism": "3.0.0",
     "@astrojs/react": "3.0.0",
-    "@astrojs/sitemap": "3.0.0",
     "@astrojs/tailwind": "5.0.0",
     "@types/md5": "2.3.2",
     "@types/react": "18.0.28",
