@@ -1,7 +1,7 @@
 ---
+import ArticleList from '../components/ArticleList.astro';
 import Layout from '../layouts/Layout.astro';
-import {getCollection, getEntryBySlug} from 'astro:content';
-import {HumanTime} from '../components/human-time';
+import {getCollection} from 'astro:content';
 
 const posts = (await getCollection('posts'))
     .filter((post) => !post.data.unlisted)
@@ -24,39 +24,7 @@ const posts = (await getCollection('posts'))
 
     <div class="px-4">
         <h1 class="my-16 text-6xl font-black">Blog</h1>
-        <section class="mb-32 space-y-8">
-            {
-                posts.map((post) => (
-                    <div class="block font-jetbrains-mono">
-                        <div class="text-2xl font-bold">
-                            {post.data?.['on-page-title-prefix'] + ' ' ?? ''}
-                        </div>
-                        <a
-                            href={`/blog/${post.slug}`}
-                            class="text-2xl font-bold"
-                            transition:name={`article-title_${post.id}`}>
-                            {post.data.title}
-                        </a>
-                        <div class="">
-                            <div class="space-x-4">
-                                {post.data.tags.map((tag) => (
-                                    <a href="#" class="text-sm text-gray-600">
-                                        #{tag}
-                                    </a>
-                                ))}
-                            </div>
-                            <div
-                                class="text-sm text-gray-500 uppercase mt-2"
-                                transition:name={`article-time_${post.id}`}>
-                                <HumanTime
-                                    time={post.data.edited}
-                                    client:idle
-                                />
-                            </div>
-                        </div>
-                    </div>
-                ))
-            }
-        </section>
+
+        <ArticleList posts={posts} />
     </div>
 </Layout>

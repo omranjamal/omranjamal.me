@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleList from '../../components/ArticleList.astro';
+import {getCollection} from 'astro:content';
+
+const {tag} = Astro.params;
+
+const posts = (await getCollection('posts'))
+    .filter((post) => !post.data.unlisted)
+    .filter((post) => {
+        if (post?.data?.tags) {
+            return post.data.tags.includes(tag);
+        }
+
+        return false;
+    })
+    .sort((a, b) => {
+        if (a.data.published > b.data.published) {
+            return -1;
+        } else {
+            return 1;
+        }
+    });
+---
+
+<Layout
+    title={`#${tag} — Omran Jamal`}
+    pageDescription={`All posts tagged with #${tag} a blog by Omran Jamal about the things in (software) engineering that are a bit less spoken of.`}
+>
+    <Fragment slot="head">
+        <meta name="og:type" content="website" />
+    </Fragment>
+
+    <div class="px-4">
+        <h1 class="my-16 text-6xl font-black">#{tag}</h1>
+
+        <ArticleList posts={posts} />
+    </div>
+</Layout>
