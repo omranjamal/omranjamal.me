@@ -1,0 +1,8 @@
+---
+const KV = Astro.locals.runtime.env.MAIN_KV;
+const value = await KV.get('random_number');
+---
+
+<div>
+    {value}
+</div>
