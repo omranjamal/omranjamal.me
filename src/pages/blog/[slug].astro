@@ -3,8 +3,6 @@ import Layout from '../../layouts/Layout.astro';
 import {getCollection, getEntryBySlug} from 'astro:content';
 import {HumanTime} from '../../components/human-time';
 
-export const prerender = true;
-
 export async function getStaticPaths() {
     return (await getCollection('posts')).map((post) => ({
         params: {slug: `${post.data.unlisted ? 'draft-' : ''}${post.slug}`},
