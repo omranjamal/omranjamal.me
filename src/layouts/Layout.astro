@@ -1,137 +1,140 @@
 ---
-import Navigation from "../components/navigation";
-import "../main.css";
-import { ViewTransitions } from "astro:transitions";
+import Navigation from '../components/navigation';
+import '../main.css';
+import {ViewTransitions} from 'astro:transitions';
 
 export interface Props {
-  title: string;
-  pageDescription?: string;
+    title: string;
+    pageDescription?: string;
 
-  narrowOGImageURL?: string;
-  mediumOGImageURL?: string;
-  wideOGImageURL?: string;
+    narrowOGImageURL?: string;
+    mediumOGImageURL?: string;
+    wideOGImageURL?: string;
 }
 
-const { title } = Astro.props;
+const {title} = Astro.props;
 
 const location = new URL(Astro.request.url);
 const path = location.pathname;
 
 const DESCRIPTION =
-  "Engineer and entreprenuer who just can't shut up about connecting the world 🌎.";
+    "Engineer and entreprenuer who just can't shut up about connecting the world 🌎.";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <meta name="robots" content="all" />
-    <meta name="generator" content={Astro.generator} />
+        <meta name="robots" content="all" />
+        <meta name="generator" content={Astro.generator} />
 
-    <title>{title}</title>
+        <title>{title}</title>
 
-    <meta
-      name="description"
-      content={Astro.props?.pageDescription ?? DESCRIPTION}
-    />
+        <meta
+            name="description"
+            content={Astro.props?.pageDescription ?? DESCRIPTION}
+        />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Just+Me+Again+Down+Here&display=swap"
-      rel="stylesheet"
-    />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Just+Me+Again+Down+Here&display=swap"
+            rel="stylesheet"
+        />
 
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="canonical" href={canonicalURL} />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+        <link rel="canonical" href={canonicalURL} />
 
-    <meta name="og:site_name" content="Omran Jamal" />
-    <meta name="og:title" content={title} />
-    <meta
-      name="og:description"
-      content={Astro.props?.pageDescription ?? DESCRIPTION}
-    />
-    <meta name="og:url" content={canonicalURL} />
+        <meta name="og:site_name" content="Omran Jamal" />
+        <meta name="og:title" content={title} />
+        <meta
+            name="og:description"
+            content={Astro.props?.pageDescription ?? DESCRIPTION}
+        />
+        <meta name="og:url" content={canonicalURL} />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="OmranJamal" />
-    <meta name="twitter:domain" content="omranjamal.me  " />
-    <meta name="twitter:url" content={canonicalURL} />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:creator" content="OmranJamal" />
-    <meta
-      name="twitter:description"
-      content={Astro.props?.pageDescription ?? DESCRIPTION}
-    />
-    <meta
-      name="twitter:image"
-      content={Astro.props?.narrowOGImageURL ??
-        "/images/og-images/homepage-2_1.png"}
-    />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="OmranJamal" />
+        <meta name="twitter:domain" content="omranjamal.me  " />
+        <meta name="twitter:url" content={canonicalURL} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:creator" content="OmranJamal" />
+        <meta
+            name="twitter:description"
+            content={Astro.props?.pageDescription ?? DESCRIPTION}
+        />
+        <meta
+            name="twitter:image"
+            content={Astro.props?.narrowOGImageURL ??
+                '/images/og-images/homepage-2_1.png'}
+        />
 
-    <slot name="head" />
+        <slot name="head" />
 
-    <meta
-      property="og:image"
-      itemprop="image"
-      content={Astro.props?.mediumOGImageURL ??
-        "/images/og-images/homepage-1-91_1.png"}
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+        <meta
+            property="og:image"
+            itemprop="image"
+            content={Astro.props?.mediumOGImageURL ??
+                '/images/og-images/homepage-1-91_1.png'}
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
 
-    <meta
-      property="og:image"
-      itemprop="image"
-      content={Astro.props?.wideOGImageURL ??
-        "/images/og-images/homepage-4_3.png"}
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="900" />
+        <meta
+            property="og:image"
+            itemprop="image"
+            content={Astro.props?.wideOGImageURL ??
+                '/images/og-images/homepage-4_3.png'}
+        />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="900" />
 
-    <ViewTransitions />
-  </head>
-  <body
-    class="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 scrollbar-thumb-rounded-full border-r-8 border-x-white"
-  >
-    <Navigation path={path} client:idle />
+        <ViewTransitions />
+    </head>
+    <body
+        class="scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100 scrollbar-thumb-rounded-full border-r-8 border-x-white"
+    >
+        <Navigation path={path} client:idle />
 
-    <main class="container max-w-screen-lg mx-auto">
-      <slot />
-    </main>
+        <main class="container max-w-screen-lg mx-auto">
+            <slot />
+        </main>
 
-    <footer>
-      <div
-        class="container flex flex-row justify-center max-w-screen-lg mx-auto my-6 text-sm"
-      >
-        <p class="w-1/2 text-center text-gray-400">
-          Site Source Avaialble @ <a
-            href="https://github.com/omranjamal/omranjamal.me"
-            class="font-semibold underline underline-offset-2"
-            >omranjamal/omranjamal.me</a
-          >
-        </p>
-      </div>
-    </footer>
+        <footer>
+            <div
+                class="container flex flex-row justify-between max-w-screen-lg mx-auto mt-36 mb-12"
+            >
+                <p class="text-gray-600">© Omran Jamal</p>
+                <p class="text-gray-700 text-right font-mono">
+                    Source Avaialble @ <a
+                        href="https://github.com/omranjamal/omranjamal.me"
+                        class="font-semibold underline underline-offset-2"
+                        >github.com/omranjamal/omranjamal.me</a
+                    >
+                </p>
+            </div>
+        </footer>
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q4B9Z8LJHR"
-    ></script>
+        <!-- Google tag (gtag.js) -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-Q4B9Z8LJHR"
+        ></script>
 
-    <script>
-      window.dataLayer = window.dataLayer || [];
+        <script>
+            window.dataLayer = window.dataLayer || [];
 
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+            function gtag() {
+                dataLayer.push(arguments);
+            }
 
-      gtag("js", new Date());
-      gtag("config", "G-Q4B9Z8LJHR");
-    </script>
-  </body>
+            gtag('js', new Date());
+            gtag('config', 'G-Q4B9Z8LJHR');
+        </script>
+    </body>
 </html>
