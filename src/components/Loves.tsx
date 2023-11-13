@@ -14,10 +14,11 @@ export default function Loves() {
         2000,
       ]}
       wrapper="span"
-      speed={1}
+      speed={90}
       repeat={Infinity}
       omitDeletionAnimation={true}
-      splitter={(text) => text.split(" ").map((word) => ` ${word}`)}
+      preRenderFirstString={true}
+      // splitter={(text) => text.split(" ").map((word) => ` ${word}`)}
     />
   );
 }
