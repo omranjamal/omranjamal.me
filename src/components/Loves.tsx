@@ -13,12 +13,10 @@ export default function Loves() {
         "building teams that are unfazed by the unknown.",
         2000,
       ]}
-      wrapper="span"
       speed={90}
       repeat={Infinity}
       omitDeletionAnimation={true}
       preRenderFirstString={true}
-      // splitter={(text) => text.split(" ").map((word) => ` ${word}`)}
     />
   );
 }
