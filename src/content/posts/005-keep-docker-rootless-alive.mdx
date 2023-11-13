@@ -48,7 +48,6 @@ KillUserProcesses=no
 
 ## Step 03: Restart The Rootless Docker Service
 
-
 ```bash
 systemctl --user restart docker.service
 ```
@@ -62,12 +61,11 @@ merry way knowing that docker will be alive and well.
 
 # What Just Happened
 
-`systemd` might not be configured to hold on to your processes when you start them. That's 
+`systemd` might not be configured to hold on to your processes when you start them. That's
 why we ran `enable-linger`.
 
 [`systemd`'s documentation](https://manpages.debian.org/testing/systemd/loginctl.1.en.html#:~:text=enable%2Dlinger%20%5BUSER...%5D)
 has this to say about enabling of disabling linger.
-
 
 > `enable-linger [USER...], disable-linger [USER...]`
 >
@@ -80,11 +78,9 @@ linger for the user)
 The [documentation for `KillUserProcesses=`](https://manpages.debian.org/testing/systemd/logind.conf.5.en.html#:~:text=reservation%20is%20disabled.-,KillUserProcesses%3D,-Takes%20a%20boolean)
 states the following ...
 
-
 > `KillUserProcesses=`
 >
 > Takes a boolean argument. Configures whether the processes of a user should be killed when the user logs out. If true, the scope unit corresponding to the session and all processes inside that scope will be terminated. If false, the scope is "abandoned", see systemd.scope(5), and processes are not killed. Defaults to "no", but see the options KillOnlyUsers= and KillExcludeUsers= below.
-
 
 Notice that the default is `no` hence out of the box. No retention of processes.
 
@@ -94,25 +90,24 @@ Now to be extra-extra sure. We set [`UserStopDelaySec=`](https://manpages.debian
 >
 > Specifies how long to keep the user record and per-user service user@.service around for a user after they logged out fully. If set to zero, the per-user service is terminated immediately when the last session of the user has ended. If this option is configured to non-zero rapid logout/login cycles are sped up, as the user's service manager is not constantly restarted. If set to "infinity" the per-user service for a user is never terminated again after first login, and continues to run until system shutdown. Defaults to 10s.
 
-
 # How I Discovered It
 
 It was baffling at first but here are the clues ...
 
 1. The fact that it only occured when I ran containers under my own user
-without `sudo` gave me the first clue. _Something to do with my logged-in session and user._
+   without `sudo` gave me the first clue. _Something to do with my logged-in session and user._
 
 2. The second clue was that the containers didn't crash or
-anything they after I checked why the containers existed I
-noticed they were gracefully stopped. _Hinting that this might be a feature and not a bug; hence
-can be fixed via configuration._
+   anything they after I checked why the containers existed I
+   noticed they were gracefully stopped. _Hinting that this might be a feature and not a bug; hence
+   can be fixed via configuration._
 
 3. As soon as I ran any Docker command at all, the containers seemed to magically
-come back to life with an uptime of less than a minute. _Suggesting that the act of running the command
-and/or logging in to my user re-activated the docker service._
+   come back to life with an uptime of less than a minute. _Suggesting that the act of running the command
+   and/or logging in to my user re-activated the docker service._
 
 4. The `dockerd` service itself had an uptime of under a minute (as reported by systemd). _This suggests
-that `systemd` might have something to do with it._
+   that `systemd` might have something to do with it._
 
 5. Upon checking the logs by running `journalctl --user -xu docker.service` all suspicions were confirmed.
-_`systemd` was sending `SIGTERM` to the docker service and gracefully shutting it down._
+   _`systemd` was sending `SIGTERM` to the docker service and gracefully shutting it down._

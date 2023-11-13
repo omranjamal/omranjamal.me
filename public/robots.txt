@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Disallow: /blog/draft-*
+Disallow: /blog/-*
 Disallow: /tag/*
 
 Sitemap: https://omranjamal.me/sitemap-index.xml

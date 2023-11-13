@@ -5,7 +5,7 @@ import {HumanTime} from '../../components/human-time';
 
 const {slug} = Astro.params;
 
-const post = await getEntryBySlug('posts', slug.replace('draft-', ''));
+const post = await getEntryBySlug('posts', slug);
 const {Content} = await post.render();
 ---
 

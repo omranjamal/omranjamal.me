@@ -1,85 +1,91 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { ChevronRight, ExternalLink } from "react-feather";
+import Layout from '../layouts/Layout.astro';
+import {ChevronRight, ExternalLink} from 'react-feather';
+import Loves from '../components/Loves';
 ---
 
 <Layout title="Omran Jamal">
-  <Fragment slot="head">
-    <meta name="og:type" content="profile" />
-    <meta name="profile:first_name" content="Omran"/>
-    <meta name="profile:last_name" content="Jamal"/>
-    <meta name="profile:username" content="omranjamal"/>
-    <meta name="profile:gender" content="male"/>
-  </Fragment>
+    <Fragment slot="head">
+        <meta name="og:type" content="profile" />
+        <meta name="profile:first_name" content="Omran" />
+        <meta name="profile:last_name" content="Jamal" />
+        <meta name="profile:username" content="omranjamal" />
+        <meta name="profile:gender" content="male" />
+    </Fragment>
 
-  <section class="flex flex-col items-center mt-10">
-    <div class="flex flex-col">
-      <div
-        class="text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-[0.85em]"
-      >
-        Hello, I'm
-      </div>
-      <div
-        class="uppercase text-[5rem] sm:text-[8rem] md:text-[10rem] lg:text-[14rem] xl:text-[16rem] leading-[0.85em]"
-      >
-        <div class="font-black">
-          <span
-            class:list={[
-              "relative before:bg-cover before:block before:absolute before:rounded-full before:w-[40%] before:h-[35%] before:left-0 before:bottom-0 before:right-0 before:m-auto before:top-0 before:-z-10",
-              `before:bg-[url(https://avatars.githubusercontent.com/u/4700757?v=4)]`,
-            ]}
-            ><div
-              aria-hidden="true"
-              class="absolute top-0 bottom-0 left-0 hidden w-0 h-0 m-auto text-3xl font-normal leading-5 normal-case bg-red-100 md:block"
+    <section class="flex flex-col items-center mt-10">
+        <div class="flex flex-col">
+            <div
+                class="text-[3rem] sm:text-[4rem] md:text-[5rem] lg:text-[6.5rem] xl:text-[8rem] font-black leading-[0.85em]"
             >
-              <div
-                class="absolute top-0 bottom-0 w-0 h-[1.5em] my-auto right-28"
-              >
-                <div
-                  class="absolute top-0 bottom-0 left-0 h-full my-auto w-28 font-just-me"
-                >
-                  That's My Gravatar
-                  <div
-                    class="absolute top-0 bottom-0 flex items-center justify-end w-16 h-6 my-auto -right-14 before:block before:h-[2.5px] before:w-full before:bg-[#FF5FF9] before:my-auto before:translate-x-1"
-                  >
-                    <ChevronRight color="#FF5FF9" size={48} />
-                  </div>
+                Hello, I'm
+            </div>
+            <div
+                class="uppercase text-[5rem] sm:text-[8rem] md:text-[10rem] lg:text-[14rem] xl:text-[16rem] leading-[0.85em]"
+            >
+                <div class="font-black">
+                    <span
+                        class:list={[
+                            'relative before:bg-cover before:block before:absolute before:rounded-full before:w-[40%] before:h-[35%] before:left-0 before:bottom-0 before:right-0 before:m-auto before:top-0 before:-z-10',
+                            `before:bg-[url(https://gravatar.com/avatar/10adb84796b5c5291d8c6d62f09968ab?s=600&d=robohash&r=x)]`,
+                        ]}
+                        ><div
+                            aria-hidden="true"
+                            class="absolute top-0 bottom-0 left-0 hidden w-0 h-0 m-auto text-3xl font-normal leading-5 normal-case bg-red-100 md:block"
+                        >
+                            <div
+                                class="absolute top-0 bottom-0 w-0 h-[1.5em] my-auto right-28"
+                            >
+                                <div
+                                    class="absolute top-0 bottom-0 left-0 h-full my-auto w-28 font-just-me"
+                                >
+                                    That's My Gravatar
+                                    <div
+                                        class="absolute top-0 bottom-0 flex items-center justify-end w-16 h-6 my-auto -right-14 before:block before:h-[2.5px] before:w-full before:bg-[#FF5FF9] before:my-auto before:translate-x-1"
+                                    >
+                                        <ChevronRight
+                                            color="#FF5FF9"
+                                            size={48}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>O</span
+                    >mr<span class="relative"
+                        ><div
+                            aria-hidden="true"
+                            class="absolute top-0 left-0 hidden w-0 h-0 md:block"
+                        >
+                            <div
+                                class="absolute flex flex-row items-center w-72 -left-0 lg:-left-10 -bottom-12"
+                            >
+                                <img src="/images/pin.svg" class="w-24 h-24" />
+                                <div class="text-sm normal-case">
+                                    <div class="font-light leading-[0.5em]">
+                                        Currently Based In
+                                    </div>
+                                    <div class="text-lg font-semibold">
+                                        Dhaka, Bangladesh
+                                    </div>
+                                </div>
+                            </div>
+                        </div>an</span
+                    >
                 </div>
-              </div>
-            </div>O</span
-          >mr<span class="relative"
-            ><div
-              aria-hidden="true"
-              class="absolute top-0 left-0 hidden w-0 h-0 md:block"
-            >
-              <div
-                class="absolute flex flex-row items-center w-72 -left-0 lg:-left-10 -bottom-12"
-              >
-                <img src="/images/pin.svg" class="w-24 h-24" />
-                <div class="text-sm normal-case">
-                  <div class="font-light leading-[0.5em]">
-                    Currently Based In
-                  </div>
-                  <div class="text-lg font-semibold">Dhaka, Bangladesh</div>
-                </div>
-              </div>
-            </div>an</span
-          >
-        </div>
-        <div class="font-black">
-          Jama<span class="relative"
-            ><div
-              class="absolute top-0 bottom-0 hidden h-32 my-auto text-sm font-light md:block -right-24"
-            >
-              <a
-                target="_blank"
-                href="https://github.com/omranjamal"
-                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-              >
-                <span>Github</span>
-                <ExternalLink className="w-4" />
-              </a>
-              <!-- <a
+                <div class="font-black">
+                    Jama<span class="relative"
+                        ><div
+                            class="absolute top-0 bottom-0 hidden h-32 my-auto text-sm font-light md:block -right-24"
+                        >
+                            <a
+                                target="_blank"
+                                href="https://github.com/omranjamal"
+                                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                            >
+                                <span>Github</span>
+                                <ExternalLink className="w-4" />
+                            </a>
+                            <!-- <a
                 target="_blank"
                 href="https://medium.com/@omranjamal"
                 class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
@@ -87,54 +93,53 @@ import { ChevronRight, ExternalLink } from "react-feather";
                 <span>Medium</span>
                 <ExternalLink className="w-4" />
               </a> -->
-              <a
-                target="_blank"
-                href="https://twitter.com/OmranJamal"
-                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-              >
-                <span>Twitter</span>
-                <ExternalLink className="w-4" />
-              </a>
-              <a
-                target="_blank"
-                href="https://bd.linkedin.com/in/omranjamal"
-                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-              >
-                <span>LinkedIn</span>
-                <ExternalLink className="w-4" />
-              </a>
-            </div>l</span
-          >
+                            <a
+                                target="_blank"
+                                href="https://twitter.com/OmranJamal"
+                                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                            >
+                                <span>Twitter</span>
+                                <ExternalLink className="w-4" />
+                            </a>
+                            <a
+                                target="_blank"
+                                href="https://bd.linkedin.com/in/omranjamal"
+                                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                            >
+                                <span>LinkedIn</span>
+                                <ExternalLink className="w-4" />
+                            </a>
+                        </div>l</span
+                    >
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="flex flex-row items-center my-6 md:hidden">
-      <img src="/images/pin.svg" class="w-12 h-12" />
-      <div class="text-sm normal-case">
-        <div class="font-light leading-[0.5em]">Currently Based In</div>
-        <div class="text-lg font-semibold">Dhaka, Bangladesh</div>
-      </div>
-    </div>
-    <section class="w-3/4 mt-4 md:mt-10 lg:mt-16">
-      <p
-        class="text-base sm:text-xl lg:text-3xl lg:leading-snug font-jetbrains-mono"
-      >
-        <strong>Engineer</strong> and <strong>entreprenuer</strong> who just can't
-        shut up about connecting the world 🌎 through <a
-          href="https://bonton.app"
-          class="underline underline-offset-2">Bonton Connect</a
-        >.
-      </p>
-      <p class="mt-8 text-center md:hidden">
-        <a
-          target="_blank"
-          href="https://github.com/omranjamal"
-          class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-        >
-          <span>Github</span>
-          <ExternalLink className="w-4" />
-        </a>
-        <!-- <a
+        <div class="flex flex-row items-center my-6 md:hidden">
+            <img src="/images/pin.svg" class="w-12 h-12" />
+            <div class="text-sm normal-case">
+                <div class="font-light leading-[0.5em]">Currently Based In</div>
+                <div class="text-lg font-semibold">Dhaka, Bangladesh</div>
+            </div>
+        </div>
+        <section class="w-3/4 mt-4 md:mt-10 lg:mt-16">
+            <p
+                class="text-base sm:text-xl lg:text-3xl lg:leading-snug font-jetbrains-mono h-24"
+            >
+                <strong>Engineer</strong> and <strong>entreprenuer</strong>
+                 who loves <span class="bg-yellow-100"
+                    ><Loves client:idle /></span
+                >
+            </p>
+            <p class="mt-8 text-center md:hidden">
+                <a
+                    target="_blank"
+                    href="https://github.com/omranjamal"
+                    class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                >
+                    <span>Github</span>
+                    <ExternalLink className="w-4" />
+                </a>
+                <!-- <a
           target="_blank"
           href="https://medium.com/@omranjamal"
           class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
@@ -142,24 +147,24 @@ import { ChevronRight, ExternalLink } from "react-feather";
           <span>Medium</span>
           <ExternalLink className="w-4" />
         </a> -->
-        <a
-          target="_blank"
-          href="https://twitter.com/OmranJamal"
-          class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-        >
-          <span>Twitter</span>
-          <ExternalLink className="w-4" />
-        </a>
-        <a
-          target="_blank"
-          href="https://bd.linkedin.com/in/omranjamal"
-          class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-        >
-          <span>LinkedIn</span>
-          <ExternalLink className="w-4" />
-        </a>
-      </p>
+                <a
+                    target="_blank"
+                    href="https://twitter.com/OmranJamal"
+                    class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                >
+                    <span>Twitter</span>
+                    <ExternalLink className="w-4" />
+                </a>
+                <a
+                    target="_blank"
+                    href="https://bd.linkedin.com/in/omranjamal"
+                    class="inline-flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                >
+                    <span>LinkedIn</span>
+                    <ExternalLink className="w-4" />
+                </a>
+            </p>
+        </section>
     </section>
-  </section>
-  <section><br /><br /><br /></section>
+    <section><br /><br /><br /></section>
 </Layout>
