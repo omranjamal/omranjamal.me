@@ -79,3 +79,8 @@ html, body {
   color: black;
   @apply bg-pink-600;
 }
+
+.custom-scrollbar-thumb-clearing::-webkit-scrollbar-thumb {
+    border: 0.3rem solid white;
+    /* @apply border-slate-100; */
+}
