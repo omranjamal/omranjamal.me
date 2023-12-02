@@ -9,9 +9,6 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 
 // https://astro.build/config
-import prefetch from "@astrojs/prefetch";
-
-// https://astro.build/config
 import behead from "remark-behead";
 
 // https://astro.build/config
@@ -28,7 +25,6 @@ export default defineConfig({
     }),
     mdx(),
     react(),
-    prefetch(),
   ],
   markdown: {
     remarkPlugins: [
@@ -46,4 +42,5 @@ export default defineConfig({
   },
   output: "server",
   adapter: cloudflare(),
+  prefetch: true,
 });
