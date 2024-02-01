@@ -1,17 +1,142 @@
 ---
-title: The Opinionated Docker Installation Guide
-unlisted: true
+title: The Opinionated Docker Setup Guide For Development
+on-page-title-prefix: 🐋+🥸
+short-description: Lua scripting within the Redis server instance itself is atomic, and very **very** cool.
+published: 2024-02-01
+edited: 2024-02-01
+highlight: true
+tags:
+  - docker
+  - opinion
+  - team
 ---
 
-Here's my opinion on the best and easiest way to setup Docker on your development machine
-to minimize hardship, and maximize joy.
+> This artcile is written almost entirely because I want to send this to new members of my team(s) and have (hopefully) very similar environments on all our dev machines.
 
-Admittedly, I am writing this article just so that I can send a link to this,
-and have everyone on our team setup Docker on their development machines in (hopefully)
-exactly the same way.
+# Should You Follow This?
 
-# Environment
+You should only follow this guide if ...
 
-This article works best if you're using Ubuntu, or an Ubuntu derivative distro.
+1. You are using Ubuntu (or derivative distros)
+2. You want to reduce pain and maximize joy when working in a team.
+3. _(optional)_ You are an engineer at [FringeCore_](https://fringecore.sh/) **(this is an opinion piece)**
 
-# Installing Docker
+# 1. Install Docker
+
+I would highly highly encourage the use of the [convenience script](https://docs.docker.com/engine/install/ubuntu/#install-using-the-convenience-script) to install Docker. I'm actually rather surprised more people aren't using this method of installation (maybe it's because it's not on top of [the list](https://docs.docker.com/engine/install/ubuntu/#installation-methods)).
+
+```bash
+# we don't want the installer to stick around.
+cd /tmp
+
+# ensure you have the right packages
+sudo apt install curl
+
+# this one get's the actual installer
+curl -fsSL https://get.docker.com -o get-docker.sh
+
+# this one installs it.
+sudo sh get-docker.sh
+```
+
+# 2. Setup Docker Rootless
+
+Using `sudo` every time you run a docker command is a pain, and often it makes it impossible
+to automate sometimes.
+
+## 2.1. Setup
+
+```bash
+# Ensure the dependencies are present.
+sudo apt-get install uidmap docker-ce-rootless-extras -y
+
+# Disable the system-wide daemon. (do you really need it on a dev machine?)
+sudo systemctl disable --now docker.service docker.socket
+
+# dockerd-rootless-setuptool.sh install
+dockerd-rootless-setuptool.sh install
+```
+
+Hopefully the above commadns should just run as-is.
+
+## 2.2. Ask Docker CLI to Use It
+
+Open `~/.bashrc` in an editor. _(Yes, I use nano. Fight me.)_
+
+```bash
+nano ~/.bashrc
+```
+
+Paste this at the very end.
+
+```bash
+export PATH=/usr/bin:$PATH
+export DOCKER_HOST=unix:///run/user/1000/docker.sock
+```
+
+Save and exit out of the eidtor with `Ctrl`+`O`, `Enter`, `Ctrl`+`X`.
+
+## 2.3. Reload Your Terminal environments
+
+```bash
+source ~/.bashrc
+```
+
+# 3. Allow Privileged Ports
+
+Who install nginx on the host machine anymore anyway.
+
+```bash
+# this one tells your system to allow it.
+sudo setcap cap_net_bind_service=ep $(which rootlesskit)
+
+# notice the lack of `sudo`
+systemctl --user restart docker 
+```
+
+# 4. Start + Start-up
+
+```bash
+# start it right now
+systemctl --user start docker
+
+# at boot
+systemctl --user enable docker
+```
+
+# 5. Enable Long Running Processes
+
+That don't exit as soon as you close your terminal.
+
+This section is copied directly from my [🐋 Stop Rootless Docker From Exiting](/blog/005-keep-docker-rootless-alive) post.
+
+## 4.1. Enable Linger
+
+```bash
+sudo loginctl enable-linger $USER
+```
+
+## 4.2. Edit systemd's Login Session Config
+
+Open `/etc/systemd/logind.conf` in a privileged editor.
+
+```bash
+sudo nano /etc/systemd/logind.conf
+```
+
+Add this to the end.
+
+```bash
+UserStopDelaySec=infinity
+KillUserProcesses=no
+```
+
+Then restart the docker service.
+
+```bash
+systemctl --user restart docker.service
+```
+
+# Done
+
+Enough opinions on how to setup your environment for the day. Welcome to our team.
