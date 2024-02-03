@@ -59,18 +59,17 @@ export default function Navigation({ path }: { path: string }) {
           />
 
           <NavigationLink
+            href="/work"
+            title="Work"
+            initiallyActive={path.indexOf("/work") >= 0}
+          />
+
+          <NavigationLink
             href="/blog"
             title="Blog"
             initiallyActive={path.indexOf("/blog") >= 0}
           />
 
-          {/* <NavigationLink
-            href="/projects"
-            title="Projects"
-            initiallyActive={path.indexOf("/projects") >= 0}
-          />
-           */}
-           
           <NavigationLink
             href="https://omranjamal.notion.site/Omran-Jamal-586b879ed9204928a41ca1ccd321b920"
             title="Résumé"

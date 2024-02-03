@@ -27,7 +27,7 @@ import Loves from '../components/Loves';
                     <span
                         class:list={[
                             'relative before:bg-cover before:block before:absolute before:rounded-full before:w-[40%] before:h-[35%] before:left-0 before:bottom-0 before:right-0 before:m-auto before:top-0 before:-z-10',
-                            `before:bg-[url(https://gravatar.com/avatar/10adb84796b5c5291d8c6d62f09968ab?s=600&d=robohash&r=x)]`,
+                            `before:bg-[url(/images/me.jpeg)]`,
                         ]}
                         ><div
                             aria-hidden="true"
@@ -75,7 +75,7 @@ import Loves from '../components/Loves';
                 <div class="font-black">
                     Jama<span class="relative"
                         ><div
-                            class="absolute top-0 bottom-0 hidden h-32 my-auto text-sm font-light md:block -right-24"
+                            class="absolute top-0 bottom-0 hidden h-32 my-auto text-sm font-light md:block -right-32"
                         >
                             <a
                                 target="_blank"
@@ -85,14 +85,6 @@ import Loves from '../components/Loves';
                                 <span>Github</span>
                                 <ExternalLink className="w-4" />
                             </a>
-                            <!-- <a
-                target="_blank"
-                href="https://medium.com/@omranjamal"
-                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
-              >
-                <span>Medium</span>
-                <ExternalLink className="w-4" />
-              </a> -->
                             <a
                                 target="_blank"
                                 href="https://twitter.com/OmranJamal"
@@ -107,6 +99,22 @@ import Loves from '../components/Loves';
                                 class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
                             >
                                 <span>LinkedIn</span>
+                                <ExternalLink className="w-4" />
+                            </a>
+                            <a
+                                target="_blank"
+                                href="https://facebook.com/omran.jamal"
+                                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                            >
+                                <span>Facebook</span>
+                                <ExternalLink className="w-4" />
+                            </a>
+                            <a
+                                target="_blank"
+                                href="https://www.instagram.com/omranjamal"
+                                class="flex mx-2 space-x-2 transition-colors hover:text-pink-500"
+                            >
+                                <span>Insta</span>
                                 <ExternalLink className="w-4" />
                             </a>
                         </div>l</span
@@ -126,7 +134,7 @@ import Loves from '../components/Loves';
                 class="text-base sm:text-xl lg:text-3xl lg:leading-snug font-jetbrains-mono h-24"
             >
                 <strong>Engineer</strong> and <strong>entreprenuer</strong>
-                 who loves <span class="bg-yellow-100"
+                who loves <span class="bg-yellow-100"
                     ><Loves client:idle /></span
                 >
             </p>
@@ -166,5 +174,7 @@ import Loves from '../components/Loves';
             </p>
         </section>
     </section>
-    <section><br /><br /><br /></section>
+    <section>
+        <br />
+    </section>
 </Layout>
