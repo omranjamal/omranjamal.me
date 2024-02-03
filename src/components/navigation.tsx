@@ -58,11 +58,11 @@ export default function Navigation({ path }: { path: string }) {
             initiallyActive={path === "/"}
           />
 
-          <NavigationLink
+          {/* <NavigationLink
             href="/work"
             title="Work"
             initiallyActive={path.indexOf("/work") >= 0}
-          />
+          /> */}
 
           <NavigationLink
             href="/blog"
