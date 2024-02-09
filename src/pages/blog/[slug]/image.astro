@@ -1,0 +1,64 @@
+---
+import '../../../main.css';
+import {getEntryBySlug} from 'astro:content';
+const {slug} = Astro.params;
+const post = await getEntryBySlug('posts', slug);
+
+const date = post.data.edited?.getDate() ?? '1';
+const month =
+    post.data.edited?.toLocaleDateString('default', {month: 'short'}) ?? 'Jan';
+
+const year = post.data.edited?.getUTCFullYear() ?? '1970';
+
+const dateString = `${date} ${month}, ${year}`;
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Blog Image</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Just+Me+Again+Down+Here&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <div
+            class="absolute top-0 left-0 right-0 bottom-0 w-[1200px] h-[630px] m-auto"
+        >
+            <div
+                class="px-14 py-10 bg-white w-full h-full border-[32px] border-pink-500 flex flex-col"
+            >
+                <div
+                    class="block text-5xl uppercase font-semibold
+                    text-gray-400 mb-5"
+                >
+                    {dateString}
+                </div>
+                <h1 class="text-[87px] leading-[80px] font-black">
+                    <div class="">
+                        {post.data['on-page-title-prefix']}
+                        {post.data.title}
+                    </div>
+                </h1>
+
+                <div class="flex flex-row justify-between items-center mt-auto">
+                    <div class="flex flex-row items-center space-x-6">
+                        <img
+                            src="/images/me.jpeg"
+                            class="w-28 h-28 rounded-full border-[10px] border-blue-100"
+                        />
+                        <div class="text-5xl font-bold">Omran Jamal</div>
+                    </div>
+
+                    <div class="text-pink-500 text-5xl">omranjamal.me</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -75,24 +75,25 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         />
 
         <slot name="head" />
+        <slot name="og-image">
+            <meta
+                property="og:image"
+                itemprop="image"
+                content={Astro.props?.mediumOGImageURL ??
+                    '/images/og-images/homepage-1-91_1.png'}
+            />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
 
-        <meta
-            property="og:image"
-            itemprop="image"
-            content={Astro.props?.mediumOGImageURL ??
-                '/images/og-images/homepage-1-91_1.png'}
-        />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-
-        <meta
-            property="og:image"
-            itemprop="image"
-            content={Astro.props?.wideOGImageURL ??
-                '/images/og-images/homepage-4_3.png'}
-        />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="900" />
+            <meta
+                property="og:image"
+                itemprop="image"
+                content={Astro.props?.wideOGImageURL ??
+                    '/images/og-images/homepage-4_3.png'}
+            />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="900" />
+        </slot>
 
         <ViewTransitions />
     </head>

@@ -1,12 +1,17 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../layouts/Layout.astro';
 import {getEntryBySlug} from 'astro:content';
-import {HumanTime} from '../../components/human-time';
+import {HumanTime} from '../../../components/human-time';
 
 const {slug} = Astro.params;
 
 const post = await getEntryBySlug('posts', slug);
 const {Content} = await post.render();
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imagePageURL = `${canonicalURL}/image`;
+const encodedURL = btoa(imagePageURL).replaceAll('/', '_').replaceAll('+', '-');
+const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x600.png?sign=SIGN`;
 ---
 
 <Layout
@@ -25,6 +30,10 @@ const {Content} = await post.render();
             content={post.data.edited.toISOString()}
         />
         {post.data.tags.map((tag) => <meta name="article:tag" content={tag} />)}
+    </Fragment>
+
+    <Fragment slot="og-image">
+        <meta name="og:image:url" content={imageURL} />
     </Fragment>
 
     <article itemscope itemtype="http://schema.org/Article">
