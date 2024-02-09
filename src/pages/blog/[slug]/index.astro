@@ -9,8 +9,14 @@ const post = await getEntryBySlug('posts', slug);
 const {Content} = await post.render();
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
 const imagePageURL = `${canonicalURL}/image`;
-const encodedURL = btoa(imagePageURL).replaceAll('/', '_').replaceAll('+', '-');
+
+const encodedURL = btoa(imagePageURL)
+    .replaceAll('/', '_')
+    .replaceAll('+', '-')
+    .replaceAll('=', '');
+
 const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x600.png?sign=SIGN`;
 ---
 
@@ -33,7 +39,7 @@ const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x
     </Fragment>
 
     <Fragment slot="og-image">
-        <meta name="og:image:url" content={imageURL} />
+        <meta name="og:image" content={imageURL} />
     </Fragment>
 
     <article itemscope itemtype="http://schema.org/Article">
