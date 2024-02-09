@@ -23,7 +23,7 @@ const dateString = `${date} ${month}, ${year}`;
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Just+Me+Again+Down+Here&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Just+Me+Again+Down+Here&display=swap"
             rel="stylesheet"
         />
     </head>
@@ -42,7 +42,9 @@ const dateString = `${date} ${month}, ${year}`;
                 </div>
                 <h1 class="text-[87px] leading-[80px] font-black">
                     <div class="">
-                        {post.data['on-page-title-prefix']}
+                        <span class="has-emoji"
+                            >{post.data['on-page-title-prefix']}</span
+                        >
                         {post.data.title}
                     </div>
                 </h1>
@@ -60,5 +62,11 @@ const dateString = `${date} ${month}, ${year}`;
                 </div>
             </div>
         </div>
+
+        <style>
+            .has-emoji {
+                font-family: 'Noto Color Emoji', 'Inter', sans-serif;
+            }
+        </style>
     </body>
 </html>
