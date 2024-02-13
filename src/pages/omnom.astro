@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Tool from '../mini-tools/omnom/Tool';
+---
+
+<Layout title="OmNom with Omran Jamal" bodyClass="">
+    <Fragment slot="navigation"></Fragment>
+
+    <div class="min-h-screen py-6">
+        <div class="flex flex-row justify-center">
+            <h1 class="leading-0 flex flex-col text-center">
+                <span class="text-5xl font-black leading-[0.7em]">OmNom</span>
+                <span class="text-lg"
+                    >with <a href="/" class="text-pink-500">Omran Jamal</a
+                    ></span
+                >
+            </h1>
+        </div>
+
+        <Tool client:only="react" />
+    </div>
+</Layout>

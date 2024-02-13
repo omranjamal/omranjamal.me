@@ -19,7 +19,7 @@ dependencies:
     version: 3.0.0
   '@astrojs/react':
     specifier: 3.0.6
-    version: 3.0.6(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9)
+    version: 3.0.6(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(vite@4.5.0)
   '@astrojs/tailwind':
     specifier: 5.0.2
     version: 5.0.2(astro@3.6.4)(tailwindcss@3.2.7)
@@ -41,6 +41,9 @@ dependencies:
   clsx:
     specifier: 1.2.1
     version: 1.2.1
+  lodash:
+    specifier: ^4.17.21
+    version: 4.17.21
   md5:
     specifier: 2.3.0
     version: 2.3.0
@@ -68,6 +71,11 @@ dependencies:
   timeago.js:
     specifier: 4.0.2
     version: 4.0.2
+
+devDependencies:
+  '@types/lodash':
+    specifier: 4.14.202
+    version: 4.14.202
 
 packages:
 
@@ -176,7 +184,7 @@ packages:
       prismjs: 1.29.0
     dev: false
 
-  /@astrojs/react@3.0.6(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(vite@4.4.9):
+  /@astrojs/react@3.0.6(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(vite@4.5.0):
     resolution: {integrity: sha512-hjC02q8cPeyzw+LWe6V2dPTYf8OgfuZwxmH32tkhn3JC/VTz1AdO5rM7dgvbilLnUoL7qMGapODEkSl2mmW+oA==}
     engines: {node: '>=18.14.1'}
     peerDependencies:
@@ -187,7 +195,7 @@ packages:
     dependencies:
       '@types/react': 18.0.28
       '@types/react-dom': 18.0.11
-      '@vitejs/plugin-react': 4.0.4(vite@4.4.9)
+      '@vitejs/plugin-react': 4.0.4(vite@4.5.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       ultrahtml: 1.4.0
@@ -1262,6 +1270,10 @@ packages:
       '@types/unist': 3.0.0
     dev: false
 
+  /@types/lodash@4.14.202:
+    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
+    dev: true
+
   /@types/md5@2.3.2:
     resolution: {integrity: sha512-v+JFDu96+UYJ3/UWzB0mEglIS//MZXgRaJ4ubUPwOM0gvLc/kcQ3TWNYwENEK7/EcXGQVrW8h/XqednSjBd/Og==}
     dev: false
@@ -1330,7 +1342,7 @@ packages:
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
     dev: false
 
-  /@vitejs/plugin-react@4.0.4(vite@4.4.9):
+  /@vitejs/plugin-react@4.0.4(vite@4.5.0):
     resolution: {integrity: sha512-7wU921ABnNYkETiMaZy7XqpueMnpu5VxvVps13MjmCo+utBdD79sZzrApHawHtVX66cCJQQTXFcjH0y9dSUK8g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -1340,7 +1352,7 @@ packages:
       '@babel/plugin-transform-react-jsx-self': 7.22.5(@babel/core@7.22.15)
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.22.15)
       react-refresh: 0.14.0
-      vite: 4.4.9
+      vite: 4.5.0
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -2790,6 +2802,10 @@ packages:
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+    dev: false
+
+  /lodash@4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
     dev: false
 
   /log-symbols@5.1.0:
