@@ -36,7 +36,7 @@ export type bools =
   | "is_cheesy";
 
 export function Question({ children }: PropsWithChildren) {
-  return <div className="font-black text-7xl my-12">{children}</div>;
+  return <div className="font-black text-5xl my-12 px-10">{children}</div>;
 }
 
 export function Button({
@@ -49,7 +49,7 @@ export function Button({
 }>) {
   return (
     <button
-      className={clsx("my-2 py-2 text-6xl font-bold px-6 mx-6", className)}
+      className={clsx("my-2 py-2 text-4xl font-bold px-6 mx-6", className)}
       onClick={onClick}
     >
       {children}
