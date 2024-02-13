@@ -81,7 +81,18 @@ export default function Tool() {
   );
 
   const next = useCallback(() => setStep((step) => step + 1), [setStep]);
-  const prev = useCallback(() => setStep((step) => step - 1), [setStep]);
+  const prev = useCallback(() => {
+    setStep((step) => {
+      setConditions((conditions) => {
+        const next = { ...conditions };
+        delete next[order[step - 3]];
+
+        return next;
+      });
+
+      return Math.max(step - 1, 0);
+    });
+  }, [setStep, setConditions]);
 
   const nextRestaurant = useCallback(() => {
     setIndex((index) => index + 1);
@@ -122,6 +133,12 @@ export default function Tool() {
       ) : restaurants.length === 1 ? (
         <>
           <Question>{restaurants[0].name}</Question>
+          <Button
+            className="border-2 border-red-500 text-red-500"
+            onClick={prev}
+          >
+            Back
+          </Button>
           <Button className="bg-red-500 text-white" onClick={reset}>
             🔄 Reset
           </Button>
@@ -171,7 +188,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_fine_dining", true)}
                 >
-                  Fancy ✨
+                  Fancy ✨ (
+                  {filter({ ...conditions, is_fine_dining: true }).length})
                 </Button>
               ) : (
                 <span>You saah hip and trendy, no fancy for you gurrl.</span>
@@ -181,7 +199,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_fine_dining", false)}
                 >
-                  Casual 👕
+                  Casual 👕 (
+                  {filter({ ...conditions, is_fine_dining: false }).length})
                 </Button>
               ) : (
                 <span>You saah fancy, no casual for you gurrrl.</span>
@@ -198,7 +217,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_old", false)}
                 >
-                  New & Exciting 🆕
+                  New & Exciting 🆕 (
+                  {filter({ ...conditions, is_old: false }).length})
                 </Button>
               ) : (
                 <span>Your choices seem to prefer old and safe.</span>
@@ -208,7 +228,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_old", true)}
                 >
-                  Old & Comfortable ☕
+                  Old & Comfortable ☕ (
+                  {filter({ ...conditions, is_old: true }).length})
                 </Button>
               ) : (
                 <span>Gotta go for something new.</span>
@@ -222,7 +243,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_fish", true)}
                 >
-                  🤔 Fishy 🐟
+                  🤔 Fishy 🐟 ({filter({ ...conditions, is_fish: true }).length}
+                  )
                 </Button>
               ) : (
                 <span>
@@ -234,7 +256,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_fish", false)}
                 >
-                  🍗 Meaty 🥩
+                  🍗 Meaty 🥩 (
+                  {filter({ ...conditions, is_fish: false }).length})
                 </Button>
               ) : (
                 <span>404: meat not found</span>
@@ -250,7 +273,7 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_asian", true)}
                 >
-                  Asian 🍚
+                  Asian 🍚 ({filter({ ...conditions, is_asian: true }).length})
                 </Button>
               ) : (
                 <span>
@@ -262,7 +285,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_asian", false)}
                 >
-                  🥛 We White
+                  🥛 We White (
+                  {filter({ ...conditions, is_asian: false }).length})
                 </Button>
               ) : (
                 <span>
@@ -278,7 +302,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_experimental", true)}
                 >
-                  11/10
+                  11/10 (
+                  {filter({ ...conditions, is_experimental: true }).length})
                 </Button>
               ) : (
                 <span>Your choices be kinda safe today.</span>
@@ -288,7 +313,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_experimental", false)}
                 >
-                  9/10
+                  9/10 (
+                  {filter({ ...conditions, is_experimental: false }).length})
                 </Button>
               ) : (
                 <span>
@@ -304,7 +330,8 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_cheesy", true)}
                 >
-                  Cheesy Premik + Date 🧀
+                  Cheesy Premik + Date 🧀 (
+                  {filter({ ...conditions, is_cheesy: true }).length})
                 </Button>
               ) : (
                 <span>404: cheesy restaurants not found</span>
@@ -314,7 +341,7 @@ export default function Tool() {
                   className="bg-red-500 text-white"
                   onClick={() => set("is_cheesy", false)}
                 >
-                  No. 🔫
+                  No. 🔫 ({filter({ ...conditions, is_cheesy: false }).length})
                 </Button>
               ) : (
                 <span>Literally nothing is not cheesy.</span>
@@ -345,6 +372,12 @@ export default function Tool() {
               👉
             </Button>
           </div>
+          <Button
+            className="border-2 border-red-500 text-red-500"
+            onClick={prev}
+          >
+            Back
+          </Button>
           <Button className="bg-red-500 text-white" onClick={reset}>
             🔄 Reset
           </Button>
