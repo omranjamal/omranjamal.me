@@ -1,6 +1,6 @@
 ---
-title: Slightly Advanced TypeScript
-on-page-title-prefix: 📜-👓
+title: "Slightly Advanced TypeScript — Part 1: Generic, Mapped & Conditional Types"
+on-page-title-prefix: 📜👓
 short-description: TypeScript's type system is a lot more fun than just labeling a variable as string.
 published: 2024-02-14
 edited: 2024-02-14
@@ -10,6 +10,31 @@ tags:
   - language
   - practice
 ---
+
+# Introduction
+
+I'm sure you have heard a lot of people love TypeScript's highly expressive type system,
+but you also might have heard a lot of hate around TypeScript when it comes
+to ["Type Gymnastics"](https://world.hey.com/dhh/turbo-8-is-dropping-typescript-70165c01#:~:text=the%20code%20with-,type%20gymnastics,-that%20add%20ever).
+Well, welcome to the gym. Love it or hate it, TypeScript might stick around for a while.
+
+> Note: This article was mostly there to allow my team to both evaluate themselves and to get up to
+> speed with the way we use TypeScript's highly expressive type definition syntax.
+
+## Disclaimer
+
+1. This is a work in-progress.
+2. The types defined in this article are not the best way to do it; They are mostly meant to illustrate the
+   particular features of the TypeScript language.
+
+## How To Use This Article
+
+It would be wise to use this article in order to evaluate yourself, and may pick up a few tricks along the way.
+Each section has a small little challenge, that you can attempt in the beautiful online [TypeScript Playground](https://www.typescriptlang.org/play)
+on TypeScript's own site.
+
+To compare your solutions with mine, open the **"Solution"** _collapsible_ at the end of each section. Once again
+you can and should strive to write even better types than this article.
 
 # Generics
 
@@ -91,20 +116,20 @@ What if we want an interface that will have only string values or only number va
 ```ts
 // we can de-duplicate this code with generics.
 
-interface OnlyStrings = {
-    [key: string]: string;
-};
+interface OnlyStrings {
+  [key: string]: string;
+}
 
-interface OnlyNumbers = {
-    [key: string]: number;
+type OnlyNumbers = {
+  [key: string]: number;
 };
 
 const data: OnlyStrings = {
-    a: "Apple"
+  a: "Apple",
 };
 
 const data: OnlyNumbers = {
-    a: 32
+  a: 32,
 };
 ```
 
@@ -112,7 +137,7 @@ const data: OnlyNumbers = {
     <summary>With Better Types</summary>
 
     ```ts
-    interface Only<TYPE> = {
+    interface Only<TYPE> {
         [key: string]: TYPE;
     };
 
@@ -132,8 +157,8 @@ const data: OnlyNumbers = {
 ```ts
 // write this as a `type`
 // declaration.
-interface Car<TYPE> = {
-    engine: TYPE;
+type Car<TYPE> = {
+  engine: TYPE;
 };
 ```
 
@@ -303,4 +328,122 @@ const booleanized: Booleanize<Original> = {
 
 # Conditional Types
 
-WIP.
+## Type Flip-Flop
+
+```ts
+type StringBool = "yes" | "no";
+
+// write type `Flip` here.
+
+// no type error.
+const a: Flip<StringBool> = false;
+
+// type error.
+const b: Flip<boolean> = false;
+
+// no type error
+const c: Flip<boolean> = "yes";
+
+// type error.
+const d: Flip<StringBool> = "yes";
+
+// type error.
+const e: Flip<boolean> = "maybe";
+```
+
+<details>
+    <summary>Solution</summary>
+
+    ```ts
+    type Flip<INPUT> = INPUT extends boolean ? StringBool : boolean;
+    ```
+
+</details>
+
+## Flip Value Types in Object
+
+```ts
+type Original = {
+  a: string;
+  b: number;
+};
+
+// write type `Flipped`
+
+const flipped: Flipped<Original> = {
+  a: 2024, // no error
+  b: 2023, // error
+};
+```
+
+<details>
+    <summary>Solution</summary>
+
+    ```ts
+    type Flipped<ORIGINAL> = {
+        [key in keyof ORIGINAL]: ORIGINAL[key] extends number ? string : number;
+    };
+    ```
+
+    Yes, `key` can be used to dereference a property's type like in an actualy programming language.
+
+</details>
+
+## The `infer` Keyword
+
+So say you want to turn your dictionary of arrays type to dictionary
+of the array's element type. i.e. "flattening" a dictionary type.
+
+```ts
+// back to making functions; for fun of course.
+
+function flatten(obj: { [key: string]: any }): any {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [
+      key,
+      Array.isArray(value) ? value[0] : value,
+    ])
+  ) as any;
+}
+
+const flat = flatten({
+  name: ["John", "Doe"],
+  age: 32,
+});
+
+// `name` should be string | undefined
+const name = flat.name;
+
+// `age` should be number
+const age = flat.age;
+```
+
+<details>
+    <summary>Solution</summary>
+
+    ```ts
+    function flatten<OBJECT extends {
+        [key: string]: any[] | any;
+    }>(obj: OBJECT): {
+        [key in keyof OBJECT]: OBJECT[key] extends Array<infer ELEMENT_TYPE>
+            ? ELEMENT_TYPE | undefined
+            : OBJECT[key];
+    } {
+        return Object.fromEntries(
+            Object.entries(obj).map(
+                ([key, value]) => [
+                    key,
+                    (Array.isArray(value) ? value[0] : value),
+                ]
+            )
+        ) as any;
+    }
+    ```
+
+    You know, I never really said TypeScript is a pretty language. Mostly because it really isn't.
+
+</details>
+
+# Next Steps
+
+I'm already working on _Part 2_. Hopefully it should be complete sooner rather than later. Do stay tuned.

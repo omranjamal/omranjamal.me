@@ -1,8 +1,6 @@
 import { defineConfig } from "astro/config";
-
 import tailwind from "@astrojs/tailwind";
 
-// https://astro.build/config
 import mdx from "@astrojs/mdx";
 
 // https://astro.build/config
@@ -15,12 +13,25 @@ import behead from "remark-behead";
 import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
+import expressiveCode from "astro-expressive-code";
+
+// https://astro.build/config
 export default defineConfig({
   site: "https://omranjamal.me",
   integrations: [
     tailwind({
       config: {
         applyBaseStyles: false,
+      },
+    }),
+    expressiveCode({
+      themes: ["rose-pine-moon"],
+      styleOverrides: {
+        codeFontSize: "1.05rem",
+        borderRadius: "0.6rem",
+        frames: {
+          shadowColor: "transparent",
+        },
       },
     }),
     mdx(),

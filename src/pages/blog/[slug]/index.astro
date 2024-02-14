@@ -5,7 +5,26 @@ import {HumanTime} from '../../../components/human-time';
 
 const {slug} = Astro.params;
 
+if (!slug) {
+    return new Response(
+        JSON.stringify({
+            code: 'invalid slug',
+            message: 'must provide a slug',
+        }),
+        {
+            status: 400,
+        },
+    );
+}
+
 const post = await getEntryBySlug('posts', slug);
+
+if (!post) {
+    return new Response(undefined, {
+        status: 404,
+    });
+}
+
 const {Content} = await post.render();
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
