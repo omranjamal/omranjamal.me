@@ -75,6 +75,11 @@ html, body {
     @apply text-slate-700;
 }
 
+
+.post details summary {
+    @apply cursor-pointer font-bold;
+}
+
 ::selection {
   color: black;
   @apply bg-pink-600;
@@ -82,5 +87,4 @@ html, body {
 
 .custom-scrollbar-thumb-clearing::-webkit-scrollbar-thumb {
     border: 0.3rem solid white;
-    /* @apply border-slate-100; */
 }

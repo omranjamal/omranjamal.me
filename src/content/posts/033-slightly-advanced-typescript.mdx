@@ -1,0 +1,306 @@
+---
+title: Slightly Advanced TypeScript
+on-page-title-prefix: 📜-👓
+short-description: TypeScript's type system is a lot more fun than just labeling a variable as string.
+published: 2024-02-14
+edited: 2024-02-14
+highlight: true
+tags:
+  - typescript
+  - language
+  - practice
+---
+
+# Generics
+
+Generics are basically just arguments for types.
+
+## Pass Through Function
+
+This function just returns whatever is passed to it, as such the returned value should be the type of
+the passed in value.
+
+```ts
+// We never prefer `any`; juss sayin.
+function passthrough(value: any): any {
+  return value;
+}
+
+// `apple` shuold be string, not any.
+const apple = passthrough("apple");
+
+// `bee` should be a number, not any.
+const bee = passthrough(32);
+```
+
+<details>
+    <summary>With Proper Types</summary>
+
+    ```ts
+    function passthrough<TYPE>(value: TYPE): TYPE {
+        return value;
+    }
+    ```
+
+    Yes, `TYPE` is a generic.
+
+    You could also explicitly state the type when calling the function.
+
+    ```ts
+    const a = passthrough<number>("potato"); // this will cause a type error.
+    const b = passthrough<string>("tomato"); // this won't.
+    ```
+
+</details>
+
+## Generics with Limits
+
+What if we want a function that passes through only numbers and strings, but causes an erro for
+all other data types?
+
+```ts
+function passthrough(value: string | number): string | number {
+  return value;
+}
+
+// `apple` shuold be string, not string | number.
+const apple = passthrough("apple");
+
+// `bee` should be a number, not string | number.
+const bee = passthrough(32);
+
+// should cause a type error.
+const cider = passthrough(true);
+```
+
+<details>
+    <summary>With Proper Types</summary>
+
+    ```ts
+    function passthrough<TYPE extends string | number>(value: TYPE): TYPE {
+        return value;
+    }
+    ```
+
+</details>
+
+## Generic Interfaces
+
+What if we want an interface that will have only string values or only number values, but never mixed?
+
+```ts
+// we can de-duplicate this code with generics.
+
+interface OnlyStrings = {
+    [key: string]: string;
+};
+
+interface OnlyNumbers = {
+    [key: string]: number;
+};
+
+const data: OnlyStrings = {
+    a: "Apple"
+};
+
+const data: OnlyNumbers = {
+    a: 32
+};
+```
+
+<details>
+    <summary>With Better Types</summary>
+
+    ```ts
+    interface Only<TYPE> = {
+        [key: string]: TYPE;
+    };
+
+    const data: Only<string> = {
+        a: "Apple",
+    };
+
+    const data: Only<number> = {
+        a: 32,
+    };
+    ```
+
+</details>
+
+## Generics With `type` Keyword
+
+```ts
+// write this as a `type`
+// declaration.
+interface Car<TYPE> = {
+    engine: TYPE;
+};
+```
+
+<details>
+    <summary>With `type` Declaration</summary>
+
+    ```ts
+    type Car<TYPE> = {
+        engine: TYPE;
+    };
+    ```
+
+</details>
+
+## Built-in Generics
+
+Many types built-in into TypeScript are generics, for example. Arrays.
+
+```ts
+// Write `string[]` as a generic type's argument.
+const names: string[] = [
+  "Morshed",
+  "Faisal",
+  "Farhad",
+  "John",
+  "Afia",
+  "Rifat",
+];
+```
+
+<details>
+    <summary>With Generics</summary>
+
+    ```ts
+    const names: Array<string> = ["Morshed", "Faisal", "Farhad", "John", "Afia", "Rifat"];
+    ```
+
+</details>
+
+## Multiple Generic arguments
+
+Why stop at one?
+
+```ts
+// remove all the anys
+
+function makeObject(a: any, b: any): { a: any; b: any } {
+  return { a, b };
+}
+```
+
+<details>
+    <summary>With Generics</summary>
+
+    ```ts
+    function makeObject<A_TYPE, B_TYPE>(a, b): {
+        a: A_TYPE,
+        b: B_TYPE
+    } {
+        return {a, b};
+    }
+    ```
+
+</details>
+
+## Generics Using Generics
+
+```ts
+// remove all the anys
+function findIndex(array: any[], element: any): number | null {
+  const index = array.findIndex((candidate) => candidate === element);
+  return index < 0 ? null : index;
+}
+
+// this should work as expected.
+const index01 = findIndex(["pico", "nano", "micro"], "micro");
+
+// this should be a type error.
+const index02 = findIndex(["pico", "nano", "micro"], false);
+```
+
+<details>
+    <summary>With Generics</summary>
+
+    ```ts
+    function findIndex<ELEMENT, ARRAY extends Array<ELEMENT>>(array: ARRAY, element: ELEMENT): number | null {
+        const index = array.findIndex((candidate) => candidate === element);
+        return index < 0 ? null : index;
+    }
+    ```
+
+    I know, I know, this could have been simpler, but just wanted to let you know, this also works.
+
+</details>
+
+# Mapped Types
+
+## Function to Access Properties
+
+```ts
+function getProperty(
+  object: {
+    [key: string]: any;
+  },
+  key: string
+): any {
+  return object[key];
+}
+
+const obj = {
+  name: "Rakib Al Hasan",
+  age: 32,
+};
+
+// `name` shuold be string.
+const name = getProperty(obj, "name");
+
+// should give type error.
+const sex = getProperty(obj, "sex");
+```
+
+<details>
+    <summary>With Better Types</summary>
+
+    ```ts
+    function getProperty<OBJECT extends {
+        [key: string]: any;
+    }, KEY extends keyof OBJECT>(object: OBJECT, key: KEY): OBJECT[KEY] {
+        return object[key];
+    }
+    ```
+
+    This is also a good example of generics using generics.
+
+</details>
+
+## Same Keys but Only Boolean Values
+
+```ts
+// Write the interface / type `Booleanize`.
+
+type Original = {
+  name: string;
+  age: number;
+  is_married: boolean;
+};
+
+const booleanized: Booleanize<Original> = {
+  name: true,
+  age: 32, // should cause an error
+  is_married: false,
+};
+```
+
+<details>
+    <summary>Solution</summary>
+
+    ```ts
+    type Booleanize<OBJECT extends {
+        [key: string]: any
+    }> = {
+        [key in keyof OBJECT]: boolean;
+    };
+    ```
+
+</details>
+
+# Conditional Types
+
+WIP.
