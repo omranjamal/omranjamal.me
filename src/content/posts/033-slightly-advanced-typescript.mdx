@@ -45,8 +45,9 @@ Generics are basically just arguments for types.
 This function just returns whatever is passed to it, as such the returned value should be the type of
 the passed in value.
 
-```ts
-// We never prefer `any`; juss sayin.
+```ts mark={1} del={8,11}
+// challenge: any is sin.
+
 function passthrough(value: any): any {
   return value;
 }
@@ -83,7 +84,9 @@ const bee = passthrough(32);
 What if we want a function that passes through only numbers and strings, but causes an erro for
 all other data types?
 
-```ts
+```ts mark={1} del={14}
+// challenge: allow only string and number as value but also copy the type onto return.
+
 function passthrough(value: string | number): string | number {
   return value;
 }
@@ -113,8 +116,8 @@ const cider = passthrough(true);
 
 What if we want an interface that will have only string values or only number values, but never mixed?
 
-```ts
-// we can de-duplicate this code with generics.
+```ts mark={1}
+// challenge: make this code DRY-er with Generics
 
 interface OnlyStrings {
   [key: string]: string;
@@ -154,12 +157,11 @@ const data: OnlyNumbers = {
 
 ## Generics With `type` Keyword
 
-```ts
-// write this as a `type`
-// declaration.
-type Car<TYPE> = {
+```ts mark={1}
+// challenge: write this as a `type` declaration.
+interface Car<TYPE> {
   engine: TYPE;
-};
+}
 ```
 
 <details>
@@ -177,8 +179,8 @@ type Car<TYPE> = {
 
 Many types built-in into TypeScript are generics, for example. Arrays.
 
-```ts
-// Write `string[]` as a generic type's argument.
+```ts mark={1}
+// challenge: Write `string[]` as a generic type's argument.
 const names: string[] = [
   "Morshed",
   "Faisal",
@@ -202,8 +204,8 @@ const names: string[] = [
 
 Why stop at one?
 
-```ts
-// remove all the anys
+```ts mark={1}
+// challenge: remove all the `any`s
 
 function makeObject(a: any, b: any): { a: any; b: any } {
   return { a, b };
@@ -226,8 +228,8 @@ function makeObject(a: any, b: any): { a: any; b: any } {
 
 ## Generics Using Generics
 
-```ts
-// remove all the anys
+```ts mark={1} ins={8} del={11}
+// challenge: remove all the `any`s
 function findIndex(array: any[], element: any): number | null {
   const index = array.findIndex((candidate) => candidate === element);
   return index < 0 ? null : index;
@@ -258,7 +260,8 @@ const index02 = findIndex(["pico", "nano", "micro"], false);
 
 ## Function to Access Properties
 
-```ts
+```ts mark={1} del={20} ins={17}
+// challenge: type this function properly
 function getProperty(
   object: {
     [key: string]: any;
@@ -273,7 +276,7 @@ const obj = {
   age: 32,
 };
 
-// `name` shuold be string.
+// `name` shouhld be string.
 const name = getProperty(obj, "name");
 
 // should give type error.
@@ -297,8 +300,8 @@ const sex = getProperty(obj, "sex");
 
 ## Same Keys but Only Boolean Values
 
-```ts
-// Write the interface / type `Booleanize`.
+```ts mark={1} del={11}
+// challenge: Write the interface / type `Booleanize`.
 
 type Original = {
   name: string;
@@ -330,10 +333,10 @@ const booleanized: Booleanize<Original> = {
 
 ## Type Flip-Flop
 
-```ts
+```ts mark={3} ins={6,12} del={9,15,18}
 type StringBool = "yes" | "no";
 
-// write type `Flip` here.
+// challenge: write the `Flip` type here.
 
 // no type error.
 const a: Flip<StringBool> = false;
@@ -362,17 +365,17 @@ const e: Flip<boolean> = "maybe";
 
 ## Flip Value Types in Object
 
-```ts
+```ts mark={6} del={10} ins={9}
 type Original = {
   a: string;
   b: number;
 };
 
-// write type `Flipped`
+// challenge: write type `Flipped`
 
 const flipped: Flipped<Original> = {
-  a: 2024, // no error
-  b: 2023, // error
+  a: 2024, // should be: no error
+  b: 2023, // should be: error
 };
 ```
 
@@ -391,56 +394,35 @@ const flipped: Flipped<Original> = {
 
 ## The `infer` Keyword
 
-So say you want to turn your dictionary of arrays type to dictionary
-of the array's element type. i.e. "flattening" a dictionary type.
+So what if you want to extract the type a _type_ arguments, say for example of a function that either takes a
+value or an array of values, and want to set the return type to just the type of the elements?
 
-```ts
-// back to making functions; for fun of course.
+```ts mark={1}
+// challenge: properly type this function's signatures.
 
-function flatten(obj: { [key: string]: any }): any {
-  return Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [
-      key,
-      Array.isArray(value) ? value[0] : value,
-    ])
-  ) as any;
+function firstValue(input: any[] | any): any | undefined {
+  return Array.isArray(input) ? input[0] : input;
 }
-
-const flat = flatten({
-  name: ["John", "Doe"],
-  age: 32,
-});
-
-// `name` should be string | undefined
-const name = flat.name;
-
-// `age` should be number
-const age = flat.age;
 ```
+
+Note: we have a union with `undefined` as the array could have a length of zero. We'll cover ensuring,
+lengths of arrays in a later part of this article series.
 
 <details>
     <summary>Solution</summary>
 
     ```ts
-    function flatten<OBJECT extends {
-        [key: string]: any[] | any;
-    }>(obj: OBJECT): {
-        [key in keyof OBJECT]: OBJECT[key] extends Array<infer ELEMENT_TYPE>
-            ? ELEMENT_TYPE | undefined
-            : OBJECT[key];
-    } {
-        return Object.fromEntries(
-            Object.entries(obj).map(
-                ([key, value]) => [
-                    key,
-                    (Array.isArray(value) ? value[0] : value),
-                ]
-            )
-        ) as any;
+    function firstValue<INPUT extends Array<any> | any>(
+        input: INPUT
+    ): INPUT extends Array<infer E> ? E | undefined : INPUT {
+        return Array.isArray(input) ? input[0] : input;
     }
     ```
 
-    You know, I never really said TypeScript is a pretty language. Mostly because it really isn't.
+    The `infer` keyword basically allows you to extract a generic type's argument into it's own generic type
+    variable that you can use in other parts of your type definition.
+
+    Do note that the infer keyword only works within conditional types.
 
 </details>
 
