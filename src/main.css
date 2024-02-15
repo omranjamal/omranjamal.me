@@ -3,6 +3,17 @@
 @tailwind utilities;
 @tailwind variants;
 
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(100 116 139) white;
+}
+
+@-moz-document url-prefix() {
+    html {
+        scrollbar-width: unset;
+    }
+}
+
 html, body {
     font-family: 'Inter', sans-serif;
 }
@@ -85,3 +96,4 @@ html, body {
 .custom-scrollbar-thumb-clearing::-webkit-scrollbar-thumb {
     border: 0.3rem solid white;
 }
+
