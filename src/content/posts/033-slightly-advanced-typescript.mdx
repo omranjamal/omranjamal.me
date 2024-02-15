@@ -216,7 +216,7 @@ function makeObject(a: any, b: any): { a: any; b: any } {
     <summary>With Generics</summary>
 
     ```ts
-    function makeObject<A_TYPE, B_TYPE>(a, b): {
+    function makeObject<A_TYPE, B_TYPE>(a: A_TYPE, b: B_TYPE): {
         a: A_TYPE,
         b: B_TYPE
     } {
