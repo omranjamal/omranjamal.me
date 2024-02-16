@@ -2,6 +2,7 @@
 import Layout from '../../../layouts/Layout.astro';
 import {getEntryBySlug} from 'astro:content';
 import {HumanTime} from '../../../components/human-time';
+import {H2Tag, H3Tag, H4Tag, H5Tag, H6Tag} from '../../../components/headings';
 
 const {slug} = Astro.params;
 
@@ -110,7 +111,15 @@ const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x
 
             <section class="w-full text-lg lg:w-3/4 font-inter">
                 <div class="post" itemprop="articleBody">
-                    <Content />
+                    <Content
+                        components={{
+                            h2: H2Tag,
+                            h3: H3Tag,
+                            h4: H4Tag,
+                            h5: H5Tag,
+                            h6: H6Tag,
+                        }}
+                    />
                 </div>
             </section>
         </main>
@@ -124,5 +133,19 @@ const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x
                 ))
             }
         </div>
+
+        <script>
+            document
+                .querySelectorAll('.post > h2,h3,h4,h5,h6')
+                .forEach((heading) => {
+                    heading
+                        .querySelectorAll('a.copy-hash-link-button')
+                        .forEach((button: HTMLAnchorElement) => {
+                            button.addEventListener('click', () => {
+                                navigator.clipboard.writeText(button.href);
+                            });
+                        });
+                });
+        </script>
     </article>
 </Layout>
