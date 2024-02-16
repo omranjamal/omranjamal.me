@@ -30,7 +30,7 @@ const {posts} = Astro.props;
                     <div
                         class="text-sm text-gray-500 uppercase mt-2"
                         transition:name={`article-time_${post.id}`}>
-                        <HumanTime time={post.data.edited} client:idle />
+                        <HumanTime time={post.data.edited} client:visible />
                     </div>
                 </div>
             </div>
