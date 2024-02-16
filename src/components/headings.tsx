@@ -15,10 +15,12 @@ function Tag({
   return (
     <Element {...props} className="group relative">
       <a
+        title="Click to Copy Link"
         href={`#` + id}
         className="copy-hash-link-button transition-all hidden md:inline absolute top-0 left-0 before:content-['#'] w-12 text-pink-500 opacity-0 group-hover:opacity-100 group-hover:-translate-x-10"
       />
       <a
+        title="Click to Copy Link"
         href={`#` + id}
         className="copy-hash-link-button group-hover:before:content-['#_'] text-pink-500 md:hidden"
       />
