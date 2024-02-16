@@ -21,6 +21,14 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+.post h2,
+.post h3,
+.post h4,
+.post h5,
+.post h6 {
+  @apply tracking-tight;
+}
+
 .post h2 {
   @apply mb-8 mt-12 text-5xl font-black font-jetbrains-mono;
 }

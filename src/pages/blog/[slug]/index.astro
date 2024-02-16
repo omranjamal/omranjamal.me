@@ -66,19 +66,21 @@ const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x
         <time
             itemprop="dateModified"
             datetime={post.data.edited.toISOString()}
-            class="block mt-24 text-lg uppercase pl-6 mb-2 font-semibold text-gray-400"
+            class="block mt-24 text-lg uppercase pl-6 mb-2 text-gray-500 font-jetbrains-mono"
             transition:name={`article-time_${post.id}`}
         >
             <HumanTime time={post.data.edited} client:idle />
         </time>
 
         <div
-            class="px-4 text-6xl font-black max-w-[85%] mb-6"
+            class="px-4 text-5xl lg:text-6xl font-black max-w-[85%] mb-6"
             itemprop="headline"
             transition:name={`article-title_${post.id}`}
         >
-            {post.data?.['on-page-title-prefix'] + ' ' ?? ''}<h1 class="inline">
-                {post.data.title}
+            {post.data?.['on-page-title-prefix'] + ' ' ?? ''}<h1
+                class="inline break-words hyphens-auto"
+            >
+                <Fragment set:html={post.data.title} />
             </h1>
         </div>
 
@@ -89,11 +91,6 @@ const imageURL = `https://c.ogmatic.io/V1StGXR8_Z5jdHi6B-myT/${encodedURL}.1200x
                     itemscope
                     itemtype="http://schema.org/Person"
                 >
-                    <div
-                        class="uppercase text-gray-500 font-jetbrains-mono mb-1 text-sm"
-                    >
-                        Author
-                    </div>
                     <div class="flex flex-row items-center flex-1">
                         <img
                             class="w-12 border-4 border-blue-100 h-12 rounded-full"

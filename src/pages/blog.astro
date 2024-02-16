@@ -23,8 +23,10 @@ const posts = (await getCollection('posts'))
     </Fragment>
 
     <div class="px-4">
-        <h1 class="my-16 text-6xl font-black">Blog</h1>
+        <h1 class="my-16 text-6xl font-black font-jetbrains-mono">Blog</h1>
 
-        <ArticleList posts={posts} />
+        <div class="lg:w-3/4">
+            <ArticleList posts={posts} />
+        </div>
     </div>
 </Layout>
