@@ -1,5 +1,5 @@
 ---
-title: Potential Use For WeakRef (Plugging Memory Leaks) 
+title: "Potential Use For WeakRef: Manually Plugging Memory Leaks"
 on-page-title-prefix: 🗑️🔎
 published: 2024-02-22T03:35:00+06:00
 edited: 2024-02-22T03:35:00+06:00
