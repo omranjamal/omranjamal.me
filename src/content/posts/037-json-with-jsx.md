@@ -328,7 +328,7 @@ declare namespace JSX {
 
 You could also enable it project wide by pasting it into a file called `jsxjson.d.ts` and placing it in the root of your `src` folder. (assuming you have a backend project setup and are not just using the TypeScript Playground)
 
-# Done, But ...
+# Done
 
 We're technically done, I mean, our original visualized example is actually complete.
 
@@ -352,117 +352,9 @@ const data = <object>
 
 Logging `data` to the console will yield us what we need.
 
-# Thing We Haven't Addressed
+## But ...
 
-## JSX Fragments
+Here's a list of things that are left as an exercise to the reader.
 
-We call tags without a tag name fragments. This is a fragment ...
-
-```tsx
-<>tomato</>
-```
-
-This is handled somewhat separately and is controlled a via a totally different compiler directive such as ...
-
-```tsx
-`/* @jsxFrag jsxjsonFragment */`
-```
-
-In the npm package linked below, we can actually set this to `null` as we handle `null` in the actual jsx factory function.
-
-## `react-jsx` vs `react`
-
-You can actually ask the TypeScript compiler to either emit in `react` style or in the `react-jsx` style. Throughout this article, we've been using
-the `react` style.
-
-If we were to change it to the `react-jsx` style, which is [recommended by the react team](https://legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html#whats-different-in-the-new-transform).
-
-Our outputs would start to be similar to the following ...
-
-```tsx
-console.log(
-    <object>
-        <name>Omran Jamal</name>
-    </object>
-)
-
-// becomes ...
-
-console.log(
-    _jsx("object", {
-        children: _jsx("name", { children: "Omran Jamal" }) 
-    })
-);
-```
-
-Notice how the children are passed as a prop in the prop object? It's not hard, it's just different. In the npm package linked below, we handle both emit formats.
-
-## Conciseness
-
-Let's be honest, this is much more verbose than just JSON. We shouldn't have to write `<array/>`  or `<item/>` or `<object/>` each and every time we need any of these. With some clever bit of programming and just one JavaScript class we could achieve something much more concise. Checkout the source code for it on [Github](https://github.com/omranjamal/jsx-json).
-
-# But, Is This Useful?
-
-One this I really truly believe is that often verbosity leads to higher readability (yes, I love Java). 
-
-This is a conditional object composition example:
-
-```tsx
-const version: string = "v2";
-
-export const data = (
-  <>
-    <name>Omran Jamal</name>
-    <height>{173}</height>
-    {version === "v1" ? (
-      <hobbies>
-        <>a</>
-        <>b</>
-      </hobbies>
-    ) : (
-      <passions>
-        <>a</>
-        <>b</>
-      </passions>
-    )}
-  </>
-);
-
-// is the same as ...
-
-export const data = {
-    name: "Omran Jamal",
-    height: 173,
-    ...(version === 'v1' ? {
-        hobbies: ["a", "b"]
-    } : {
-        passions: ["a", "b"]
-    })
-};
-```
-
-# Available as an NPM Package
-
-Don't you think this is a bit verbose? Wouldn't it be cooler if it was as concise as this?
-
-```tsx
-const data = (
-    <object>
-        <name>Omran Jamal</name>
-        <height>
-            <unit>cm</unit>
-            <value>{173}</value>
-        </height>
-        <hobbies>
-            <>Rebelling Against The Machine</>
-            <>Parks</>
-        </hobbies>
-    </object>
-);
-```
-
-I actually implemented a [npm package](https://www.npmjs.com/package/jsx-json) called [`jsx-json`](https://www.npmjs.com/package/jsx-json) that implements exactly these features. View it on [Github](https://github.com/omranjamal/jsx-json).
-
-The source code is short enough to read (and hopefully understand) in 3 minutes. It's just over [~60 lines](https://github.com/omranjamal/jsx-json/blob/main/packages/jsx-json/src/index.tsx).
-
-It also handles a few other things that gotchas that are detailed in the next section.
+1. The fact that `react-jsx` and `react` emit mode acts differently.
+2. Fragments `<></>`, an important feature we take for granted in React.
