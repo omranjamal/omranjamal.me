@@ -30,23 +30,23 @@ body {
 }
 
 .post h2 {
-  @apply mb-8 mt-12 text-5xl font-black font-jetbrains-mono;
+  @apply mb-8 mt-12 text-4xl font-black font-jetbrains-mono;
 }
 
 .post h3 {
-  @apply mb-4 mt-12 text-4xl font-black font-jetbrains-mono;
+  @apply mb-4 mt-12 text-3xl font-black font-jetbrains-mono;
 }
 
 .post h4 {
-  @apply mb-4 mt-12 text-2xl font-bold font-jetbrains-mono;
+  @apply mb-4 mt-12 text-xl font-bold font-jetbrains-mono;
 }
 
 .post h5 {
-  @apply mb-4 mt-12 text-xl font-semibold font-jetbrains-mono;
+  @apply mb-4 mt-12 text-lg font-semibold font-jetbrains-mono;
 }
 
 .post h6 {
-  @apply mb-2 mt-12 text-lg font-semibold font-jetbrains-mono;
+  @apply mb-2 mt-12 font-semibold font-jetbrains-mono;
 }
 
 .post p {

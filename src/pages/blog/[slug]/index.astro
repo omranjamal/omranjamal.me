@@ -26,7 +26,21 @@ if (!post) {
     });
 }
 
-const {Content} = await post.render();
+const {Content, headings} = await post.render();
+
+const contentsEnabled =
+    post.data.contents === undefined ||
+    post.data.contents === true ||
+    (post.data.contents !== false &&
+        (post.data.contents.enabled === undefined ||
+            post.data.contents.enabled === true));
+
+const contentsOpenByDefault =
+    post.data.contents === undefined ||
+    post.data.contents === true ||
+    (post.data.contents !== false &&
+        (post.data.contents.open === undefined ||
+            post.data.contents.open === true));
 ---
 
 <Layout
@@ -52,14 +66,24 @@ const {Content} = await post.render();
     </Fragment>
 
     <article itemscope itemtype="http://schema.org/Article">
-        <time
-            itemprop="dateModified"
-            datetime={post.data.edited.toISOString()}
-            class="block mt-24 text-lg uppercase pl-6 mb-2 text-gray-500 font-jetbrains-mono"
-            transition:name={`article-time_${post.id}`}
-        >
-            <HumanTime time={post.data.edited} client:idle />
-        </time>
+        <div class="mt-24 flex flex-row">
+            <time
+                itemprop="datePublished"
+                datetime={post.data.published.toISOString()}
+                class="hidden md:block text-lg uppercase pl-6 mb-2 text-gray-500 font-jetbrains-mono"
+            >
+                <HumanTime time={post.data.published} client:idle /> —
+            </time>
+
+            <time
+                itemprop="dateModified"
+                datetime={post.data.edited.toISOString()}
+                class="block text-lg uppercase pl-3 mb-2 text-gray-600 font-jetbrains-mono"
+                transition:name={`article-time_${post.id}`}
+            >
+                Edited <HumanTime time={post.data.edited} client:idle />
+            </time>
+        </div>
 
         <div
             class="px-4 text-5xl lg:text-6xl font-black max-w-[85%] mb-6"
@@ -96,6 +120,32 @@ const {Content} = await post.render();
             </aside>
 
             <section class="w-full text-lg lg:w-3/4 font-inter">
+                {
+                    contentsEnabled ? (
+                        <details open={contentsOpenByDefault}>
+                            <summary class="text-3xl text-4xl font-black font-jetbrains-mono cursor-pointer">
+                                <h2 class="inline">Contents</h2>
+                            </summary>
+
+                            <div class="my-10">
+                                {headings.map((heading) => (
+                                    <div
+                                        style={{
+                                            paddingLeft: `${2 * (heading.depth - 2)}rem`,
+                                        }}
+                                        class="py-1">
+                                        <a
+                                            href={`#${heading.slug}`}
+                                            class="font-semibold hover:text-pink-600 transition-all">
+                                            ・ {heading.text}
+                                        </a>
+                                    </div>
+                                ))}
+                            </div>
+                        </details>
+                    ) : null
+                }
+
                 <div class="post" itemprop="articleBody">
                     <Content
                         components={{
