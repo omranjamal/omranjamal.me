@@ -44,7 +44,7 @@ const contentsOpenByDefault =
 ---
 
 <Layout
-    title={`${post.data.title} — Omran Jamal`}
+    title={`${post.data.pageTitle ?? post.data.title} — Omran Jamal`}
     pageDescription={post.data['short-description'] ?? post.data.title}
 >
     <Fragment slot="head">
