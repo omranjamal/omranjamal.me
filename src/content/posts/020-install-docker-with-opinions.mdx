@@ -1,9 +1,9 @@
 ---
 title: The Opinionated Docker Setup Guide For Develop&shy;ment
 on-page-title-prefix: 🐋+🥸
-short-description: Lua scripting within the Redis server instance itself is atomic, and very **very** cool.
+short-description: Setting up docker for the development environment doesn't need to be this hard.
 published: 2024-02-01
-edited: 2024-02-01
+edited: 2024-06-21
 highlight: true
 tags:
   - docker
@@ -42,7 +42,7 @@ sudo sh get-docker.sh
 # 2. Setup Docker Rootless
 
 Using `sudo` every time you run a docker command is a pain, and often it makes it impossible
-to automate sometimes.
+to automate.
 
 ## 2.1. Setup
 
@@ -57,7 +57,7 @@ sudo systemctl disable --now docker.service docker.socket
 dockerd-rootless-setuptool.sh install
 ```
 
-Hopefully the above commadns should just run as-is.
+Hopefully the above commands should just run as-is.
 
 ## 2.2. Ask Docker CLI to Use It
 
@@ -110,13 +110,13 @@ That don't exit as soon as you close your terminal.
 
 This section is copied directly from my [🐋 Stop Rootless Docker From Exiting](/blog/005-keep-docker-rootless-alive) post.
 
-## 4.1. Enable Linger
+## 5.1. Enable Linger
 
 ```bash
 sudo loginctl enable-linger $USER
 ```
 
-## 4.2. Edit systemd's Login Session Config
+## 5.2. Edit systemd's Login Session Config
 
 Open `/etc/systemd/logind.conf` in a privileged editor.
 
@@ -136,6 +136,22 @@ Then restart the docker service.
 ```bash
 systemctl --user restart docker.service
 ```
+
+# 6. (Optional) Allow Rootless Docker to pass NVIDIA GPU
+
+Open up this file in your text editor. `/etc/nvidia-container-runtime/config.toml`
+
+```bash
+sudo nano /etc/nvidia-container-runtime/config.toml
+```
+
+Steps:
+
+1. Find the line `#no-cgroups = false` under `[nvidia-container-cli]`
+2. Uncomment the line.
+3. Change it to `true`
+
+This will allow rootless docker and docker compose to forward GPU with all its various capabilities to containers.
 
 # Done
 

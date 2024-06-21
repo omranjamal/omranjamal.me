@@ -6,7 +6,10 @@ import {getCollection} from 'astro:content';
 const posts = (await getCollection('posts'))
     .filter((post) => !post.data.unlisted)
     .sort((a, b) => {
-        if (a.data.published > b.data.published) {
+        if (
+            (a.data.edited || a.data.published) >
+            (b.data.edited || b.data.published)
+        ) {
             return -1;
         } else {
             return 1;
