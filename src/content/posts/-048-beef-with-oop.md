@@ -5,6 +5,7 @@ on-page-title-prefix: 🥴
 short-description: It's bad for the programmer and their friends. It's always the wrong tool for every job.
 published: 2024-06-22 02:00:00+6
 edited: 2024-06-22 02:00:00+6
+unlisted: true
 highlight: true
 tags:
   - oop
