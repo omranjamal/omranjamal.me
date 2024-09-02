@@ -35,7 +35,7 @@
     "timeago.js": "4.0.2"
   },
   "volta": {
-    "node": "18.17.1"
+    "node": "22.7.0"
   },
   "devDependencies": {
     "@types/lodash": "4.14.202"
