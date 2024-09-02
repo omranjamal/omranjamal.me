@@ -2,7 +2,6 @@
 import clsx from 'clsx';
 import Navigation from '../components/navigation';
 import '../main.css';
-import {ViewTransitions} from 'astro:transitions';
 
 export interface Props {
     title: string;
@@ -103,8 +102,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             data-app-id="a94c80d4-caef-4a4f-ba8a-de1d301590a7"
             async
             defer></script>
-
-        <ViewTransitions />
     </head>
     <body
         class={clsx(

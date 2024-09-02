@@ -11,6 +11,7 @@ tags:
   - jsx
   - tree
   - insanity
+contents: true
 ---
 
 # What?
@@ -44,11 +45,11 @@ The above JSX code turns into the following ...
 
 ```js
 function Test() {
-    return React.createElement(
-      "div",
-      { className: "font-bold" },
-      React.createElement("span", null, "tomato")
-    );
+  return React.createElement(
+    "div",
+    { className: "font-bold" },
+    React.createElement("span", null, "tomato")
+  );
 }
 ```
 
@@ -71,7 +72,7 @@ Becomes ...
 
 ```tsx ins={5}
 React.createElement(
-  "div", 
+  "div",
   null,
   React.createElement("span", null, "tomato"),
   React.createElement("span", null, "potato")
@@ -133,10 +134,13 @@ assert.deepEqual(jsx, json);
 ```tsx
 /* @jsx jsxjson */
 
-function jsxjson(tagName: string, props: Record<string, any> | null, ...children: any[]) {
+function jsxjson(
+  tagName: string,
+  props: Record<string, any> | null,
+  ...children: any[]
+) {
   // props can be any dictionary with string keys,
   // and values of any type.
-
   // children is variadic so that we can handle an arbitrary number of
   // passed children
 }
@@ -145,7 +149,6 @@ function jsxjson(tagName: string, props: Record<string, any> | null, ...children
 ## Handling Objects & Properties
 
 If we focus on just objects and their properties, we'll have a smaller problem to solve.
-
 
 ```jsx
 /* @jsx jsxjson */
@@ -161,9 +164,12 @@ const data = (
 Becomes ...
 
 ```js
-const data = (jsxjson("object", null,
-    jsxjson("name", null, "Omran Jamal"),
-    jsxjson("height", null, 173)));
+const data = jsxjson(
+  "object",
+  null,
+  jsxjson("name", null, "Omran Jamal"),
+  jsxjson("height", null, 173)
+);
 ```
 
 ### Properties
@@ -173,13 +179,17 @@ For now, let's return an object with just one property and one value, this will 
 ```tsx
 /* @jsx jsxjson */
 
-function jsxjson(tagName: string, props: Record<string, any> | null, ...children: any[]) {
-    return {
-        [tagName]: children[0]
-    };
+function jsxjson(
+  tagName: string,
+  props: Record<string, any> | null,
+  ...children: any[]
+) {
+  return {
+    [tagName]: children[0],
+  };
 }
 
-<name>Omran Jamal</name> // { name: "Omran Jamal" }
+<name>Omran Jamal</name>; // { name: "Omran Jamal" }
 ```
 
 ### Object
@@ -189,27 +199,34 @@ It's time for a ternary and a reducer.
 ```tsx
 /* @jsx jsxjson */
 
-function jsxjson(tagName: string, props: Record<string, any> | null, ...children: any[]) {
-    return tagName === 'object'
-        ? children.reduce((acc, cur) => ({
-            ...acc,
-            ...cur
-        }), {})
-        : {[tagName]: children[0]};
+function jsxjson(
+  tagName: string,
+  props: Record<string, any> | null,
+  ...children: any[]
+) {
+  return tagName === "object"
+    ? children.reduce(
+        (acc, cur) => ({
+          ...acc,
+          ...cur,
+        }),
+        {}
+      )
+    : { [tagName]: children[0] };
 }
 
 console.log(
-    <object>
-        <name>Omran Jamal</name>
-    </object>
-) // { name: "Omran Jamal" }
+  <object>
+    <name>Omran Jamal</name>
+  </object>
+); // { name: "Omran Jamal" }
 
 console.log(
-    <object>
-        <name>Omran Jamal</name>
-        <height>{173}</height>
-    </object>
-) // { name: "Omran Jamal", height: 173 }
+  <object>
+    <name>Omran Jamal</name>
+    <height>{173}</height>
+  </object>
+); // { name: "Omran Jamal", height: 173 }
 ```
 
 Isn't it magical?
@@ -254,22 +271,27 @@ For items, we'll just return the first child with no wrapping. This will once ag
 ```tsx
 /* @jsx jsxjson */
 
-function jsxjson(tagName: string, props: Record<string, any> | null, ...children: any[]) {
-    return tagName === 'object'
-        ? children.reduce((acc, cur) => ({
-            ...acc,
-            ...cur
-        }), {})
-        : tagName === 'prop'
-        ? { [props.key]: children[0] }
-        : tagNaame === 'item'
-        ? children[0]
-        : { [tagName]: children[0] };
+function jsxjson(
+  tagName: string,
+  props: Record<string, any> | null,
+  ...children: any[]
+) {
+  return tagName === "object"
+    ? children.reduce(
+        (acc, cur) => ({
+          ...acc,
+          ...cur,
+        }),
+        {}
+      )
+    : tagName === "prop"
+    ? { [props.key]: children[0] }
+    : tagNaame === "item"
+    ? children[0]
+    : { [tagName]: children[0] };
 }
 
-console.log(
-    <item>tomato</item>
-) // "tomato"
+console.log(<item>tomato</item>); // "tomato"
 ```
 
 ### Arrays
@@ -279,27 +301,34 @@ We'll just collect all the items and return it. This is a fancy way of say we'll
 ```tsx
 /* @jsx jsxjson */
 
-function jsxjson(tagName: string, props: Record<string, any> | null, ...children: any[]) {
-    return tagName === 'object'
-        ? children.reduce((acc, cur) => ({
-            ...acc,
-            ...cur
-        }), {})
-        : tagName === 'prop'
-        ? { [props.key]: children[0] }
-        : tagName === 'item'
-        ? children[0]
-        : tagName === 'array'
-        ? children
-        : { [tagName]: children[0] };
+function jsxjson(
+  tagName: string,
+  props: Record<string, any> | null,
+  ...children: any[]
+) {
+  return tagName === "object"
+    ? children.reduce(
+        (acc, cur) => ({
+          ...acc,
+          ...cur,
+        }),
+        {}
+      )
+    : tagName === "prop"
+    ? { [props.key]: children[0] }
+    : tagName === "item"
+    ? children[0]
+    : tagName === "array"
+    ? children
+    : { [tagName]: children[0] };
 }
 
 console.log(
-    <array>
-        <item>mango</item>
-        <item>tomato</item>
-    </array>
-) // ["mango", "tomato"]
+  <array>
+    <item>mango</item>
+    <item>tomato</item>
+  </array>
+); // ["mango", "tomato"]
 ```
 
 # TypeScript Errors
@@ -314,15 +343,15 @@ Asking typescript to chill sometimes is not ideal but a necessary evil. Adding t
 
 ```tsx
 declare namespace JSX {
-    interface IntrinsicElements {
-        object: {},
-        prop: {
-            key: string;
-        },
-        array: {},
-        item: {},
-        [key: string]: {};
-    }
+  interface IntrinsicElements {
+    object: {};
+    prop: {
+      key: string;
+    };
+    array: {};
+    item: {};
+    [key: string]: {};
+  }
 }
 ```
 
@@ -333,21 +362,23 @@ You could also enable it project wide by pasting it into a file called `jsxjson.
 We're technically done, I mean, our original visualized example is actually complete.
 
 ```tsx
-const data = <object>
+const data = (
+  <object>
     <name>Omran Jamal</name>
     <height>
-        <object>
-            <unit>cm</unit>
-            <value>{173}</value>
-        </object>
+      <object>
+        <unit>cm</unit>
+        <value>{173}</value>
+      </object>
     </height>
     <hobbies>
-        <array>
-            <item>rebelling against the machine</item>
-            <item>parks</item>
-        </array>
+      <array>
+        <item>rebelling against the machine</item>
+        <item>parks</item>
+      </array>
     </hobbies>
-</object>
+  </object>
+);
 ```
 
 Logging `data` to the console will yield us what we need.
