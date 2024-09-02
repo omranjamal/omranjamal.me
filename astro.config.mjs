@@ -25,6 +25,7 @@ export default defineConfig({
         applyBaseStyles: false,
       },
     }),
+    react(),
     expressiveCode({
       themes: ["rose-pine-moon"],
       styleOverrides: {
@@ -36,7 +37,6 @@ export default defineConfig({
       },
     }),
     mdx(),
-    react(),
   ],
   markdown: {
     remarkPlugins: [
