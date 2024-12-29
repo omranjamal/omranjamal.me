@@ -29,6 +29,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <!doctype html>
 <html lang="en">
     <head>
+        <!-- Google Tag Manager -->
+        <script is:inline>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', 'GTM-WC8432C2');
+        </script>
+        <!-- End Google Tag Manager -->
+
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -98,12 +113,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             <meta property="og:image:height" content="900" />
         </slot>
 
-        <script
-            src="https://app.10xlaunch.ai/widget"
-            data-app-id="a94c80d4-caef-4a4f-ba8a-de1d301590a7"
-            async
-            defer></script>
-
         <ViewTransitions />
     </head>
     <body
@@ -112,6 +121,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             bodyClass,
         )}
     >
+        <!-- Google Tag Manager (noscript) -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-WC8432C2"
+                height="0"
+                width="0"
+                style="display:none;visibility:hidden"></iframe></noscript
+        >
+        <!-- End Google Tag Manager (noscript) -->
+
         <slot name="navigation">
             <Navigation path={path} client:idle />
         </slot>
