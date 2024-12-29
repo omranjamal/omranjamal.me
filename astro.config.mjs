@@ -25,6 +25,7 @@ export default defineConfig({
         applyBaseStyles: false,
       },
     }),
+    react(),
     expressiveCode({
       themes: ["rose-pine-moon"],
       styleOverrides: {
@@ -36,7 +37,6 @@ export default defineConfig({
       },
     }),
     mdx(),
-    react(),
   ],
   markdown: {
     remarkPlugins: [
@@ -53,6 +53,8 @@ export default defineConfig({
     },
   },
   output: "server",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    imageService: "passthrough",
+  }),
   prefetch: false,
 });

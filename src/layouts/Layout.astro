@@ -2,7 +2,6 @@
 import clsx from 'clsx';
 import Navigation from '../components/navigation';
 import '../main.css';
-import {ViewTransitions} from 'astro:transitions';
 
 export interface Props {
     title: string;
@@ -112,8 +111,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
             <meta property="og:image:width" content="1200" />
             <meta property="og:image:height" content="900" />
         </slot>
-
-        <ViewTransitions />
     </head>
     <body
         class={clsx(
@@ -155,22 +152,5 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
                 </p>
             </div>
         </footer>
-
-        <!-- Google tag (gtag.js) -->
-        <script
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-Q4B9Z8LJHR"
-        ></script>
-
-        <script>
-            window.dataLayer = window.dataLayer || [];
-
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-
-            gtag('js', new Date());
-            gtag('config', 'G-Q4B9Z8LJHR');
-        </script>
     </body>
 </html>
