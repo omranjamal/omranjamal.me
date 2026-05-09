@@ -6,6 +6,7 @@ short-description: It's bad for the programmer and their friends. It's always th
 published: 2024-06-22 02:00:00+6
 edited: 2024-06-22 02:00:00+6
 highlight: true
+unlisted: true
 tags:
   - oop
   - opinion
